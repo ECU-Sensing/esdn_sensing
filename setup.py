@@ -16,7 +16,7 @@ setup(
           'py-opc-ng',
           'pyusbiss',
           'sensirion_i2c_driver',
-          'sensiron_i2c_sen5x',
+          'sensirion_i2c_sen5x',
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package

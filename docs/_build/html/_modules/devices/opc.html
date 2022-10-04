@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>devices.opc &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to esdn_sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><cite>hydros</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>devices.opc</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for devices.opc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`opc`</span>
+<span class="sd">================================================================================</span>
+
+<span class="sd">*Python library for OPC-Nx (2-3) Air Quality Sensor.*</span>
+
+<span class="sd">**Author(s):** `Colby Sawyer &lt;https://github.com/ColbySawyer7&gt;`_</span>
+
+<span class="sd">Implementation Notes</span>
+<span class="sd">--------------------</span>
+<span class="sd">**Hardware:**</span>
+<span class="sd">`OPC-N3 &lt;https://www.alphasense.com/products/optical-particle-counter/&gt;`_</span>
+
+<span class="sd">**Software and Dependencies:**</span>
+<span class="sd">Utilizing py-opc-ng library based on work from `Fargiolas@Github &lt;https://github.com/fargiolas/py-opc-ng&gt;`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">usbiss.spi</span> <span class="kn">import</span> <span class="n">SPI</span>
+<span class="kn">import</span> <span class="nn">opcng</span> <span class="k">as</span> <span class="nn">opc</span>
+
+<div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#devices.opc.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_size (int, mandatory): [Sample size (seconds) of collection]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [int]: [Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spi</span> <span class="o">=</span> <span class="n">SPI</span><span class="p">(</span><span class="s1">&#39;/dev/ttyACM0&#39;</span><span class="p">)</span>
+    <span class="n">spi</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">spi</span><span class="o">.</span><span class="n">max_speed_hz</span> <span class="o">=</span> <span class="mi">500000</span>
+    <span class="n">spi</span><span class="o">.</span><span class="n">lsbfirst</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="n">dev</span> <span class="o">=</span> <span class="n">opc</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">spi</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;device information: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;serial: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;firmware version: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">total_pm1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_pm25</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total_pm10</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># power on fan and laser</span>
+    <span class="n">dev</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
+        <span class="c1"># query particle mass readings</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">full_read</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">pm</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">full_read</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>    
+            <span class="n">total_pm1</span> <span class="o">=</span> <span class="n">total_pm1</span> <span class="o">+</span> <span class="n">full_read</span><span class="p">[</span><span class="s1">&#39;PM1&#39;</span><span class="p">]</span>
+            <span class="n">total_pm25</span> <span class="o">=</span> <span class="n">total_pm25</span> <span class="o">+</span> <span class="n">full_read</span><span class="p">[</span><span class="s1">&#39;PM2.5&#39;</span><span class="p">]</span>
+            <span class="n">total_pm10</span> <span class="o">=</span> <span class="n">total_pm10</span> <span class="o">+</span>  <span class="n">full_read</span><span class="p">[</span><span class="s1">&#39;PM10&#39;</span><span class="p">]</span>
+
+    <span class="n">histogram</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">histogram</span><span class="p">()</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span>
+    <span class="n">humidity</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">[</span><span class="s1">&#39;Relative humidity&#39;</span><span class="p">]</span>
+    <span class="n">laser_status</span> <span class="o">=</span> <span class="n">histogram</span><span class="p">[</span><span class="s1">&#39;Laser status&#39;</span><span class="p">]</span>
+
+    <span class="c1"># power off fan and laser</span>
+    <span class="n">dev</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="n">avg_pm1</span> <span class="o">=</span> <span class="n">total_pm1</span><span class="o">/</span><span class="n">sample_size</span>
+    <span class="n">avg_pm25</span> <span class="o">=</span> <span class="n">total_pm25</span><span class="o">/</span><span class="n">sample_size</span>
+    <span class="n">avg_pm10</span> <span class="o">=</span> <span class="n">total_pm10</span><span class="o">/</span><span class="n">sample_size</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM1: </span><span class="si">{</span><span class="n">avg_pm1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM2.5: </span><span class="si">{</span><span class="n">avg_pm25</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM10: </span><span class="si">{</span><span class="n">avg_pm10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Temperature: </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Humidity: </span><span class="si">{</span><span class="n">humidity</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Laser Status: </span><span class="si">{</span><span class="n">laser_status</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm1</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm25</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm10</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">temperature</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">humidity</span>
+    <span class="n">res</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">laser_status</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="OPC"><a class="viewcode-back" href="../../api.html#devices.opc.OPC">[docs]</a><span class="k">class</span> <span class="nc">OPC</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver class for OPC particulate sensors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">avg_pm1</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">avg_pm25</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">avg_pm10</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">humidity</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">laser_status</span><span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="OPC.init"><a class="viewcode-back" href="../../api.html#devices.opc.OPC.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">avg_pm1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">avg_pm25</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">avg_pm10</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">humidity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">laser_status</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance of sensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            avg_pm1 (int, optional): Average PM1. Defaults to 0.</span>
+<span class="sd">            avg_pm25 (int, optional): Average PM2.5. Defaults to 0.</span>
+<span class="sd">            avg_pm10 (int, optional): Average PM10. Defaults to 0.</span>
+<span class="sd">            temperature (int, optional): Temperature. Defaults to 0.</span>
+<span class="sd">            humidity (int, optional): Humidity. Defaults to 0.</span>
+<span class="sd">            laser_status (int, optional): Laser Status Code. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span><span class="o">=</span> <span class="n">avg_pm1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span><span class="o">=</span> <span class="n">avg_pm25</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span><span class="o">=</span> <span class="n">avg_pm10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="o">=</span> <span class="n">humidity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span><span class="o">=</span> <span class="n">laser_status</span></div>
+
+<div class="viewcode-block" id="OPC.get_data"><a class="viewcode-back" href="../../api.html#devices.opc.OPC.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collects data from the device attached via the sensor_run method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sample_size (int, optional): [Sample size (seconds) of collection]. Defaults to 10.</span>
+<span class="sd">            dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           [Bytearray]: [Packaged up data to be sent via LoRa driving code]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+
+            <span class="n">avg_pm1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm1: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm1</span><span class="p">)</span>
+
+            <span class="n">avg_pm25</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm25: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm25</span><span class="p">)</span>
+
+            <span class="n">avg_pm10</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm10: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm10</span><span class="p">)</span>
+
+            <span class="n">temperature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+
+            <span class="n">humidity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;humidity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">humidity</span><span class="p">)</span>
+
+            <span class="n">laser_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;laser_status: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">laser_status</span><span class="p">)</span>
+
+
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+            <span class="n">FEATHER_ID</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">FEATHER_ID</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm1</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">avg_pm1</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm25</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm25</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm10</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm10</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">humidity</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">humidity</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">laser_status</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">laser_status</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="k">return</span> <span class="n">sensor_data</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error on sensor reading: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

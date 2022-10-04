@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>esdn_sensing.sen5x &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to esdn_sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><cite>hydros</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>esdn_sensing.sen5x</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for esdn_sensing.sen5x</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`sen5x`</span>
+<span class="sd">================================================================================</span>
+
+<span class="sd">*Python library for Sensirion SEN5xAir Quality Sensor.*</span>
+
+<span class="sd">**Author(s):** `Colby Sawyer &lt;https://github.com/ColbySawyer7&gt;`_</span>
+
+<span class="sd">Implementation Notes</span>
+<span class="sd">--------------------</span>
+<span class="sd">**Hardware:**</span>
+<span class="sd">`Sensirion SEN-5x &lt;https://sensirion.com/products/catalog/SEN54/&gt;`_</span>
+
+<span class="sd">**Software and Dependencies:**</span>
+<span class="sd">Utilizing Sensirion provided libraries. `More Information &lt;https://sensirion.github.io/python-i2c-driver/&gt;`_</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_driver</span> <span class="kn">import</span> <span class="n">I2cConnection</span><span class="p">,</span> <span class="n">LinuxI2cTransceiver</span>
+<span class="kn">from</span> <span class="nn">sensirion_i2c_sen5x</span> <span class="kn">import</span> <span class="n">Sen5xI2cDevice</span>
+
+<div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.sen5x.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sample_size (int, mandatory): [Sample size (seconds) of collection]</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [int]: [Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">LinuxI2cTransceiver</span><span class="p">(</span><span class="s1">&#39;/dev/i2c-1&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">i2c_transceiver</span><span class="p">:</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">Sen5xI2cDevice</span><span class="p">(</span><span class="n">I2cConnection</span><span class="p">(</span><span class="n">i2c_transceiver</span><span class="p">))</span>
+
+        <span class="c1"># Print some device information</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_version</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product Name: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_product_name</span><span class="p">()))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Serial Number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
+
+        <span class="c1"># Perform a device reset (reboot firmware)</span>
+        <span class="n">device</span><span class="o">.</span><span class="n">device_reset</span><span class="p">()</span>
+
+        <span class="c1"># Start measurement</span>
+        <span class="n">device</span><span class="o">.</span><span class="n">start_measurement</span><span class="p">()</span>
+        <span class="c1"># Wait until next result is available</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Waiting for new data...&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">device</span><span class="o">.</span><span class="n">read_data_ready</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="c1"># Read measured values -&gt; clears the &quot;data ready&quot; flag</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">read_measured_values</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># Access a specific value separately (see Sen5xMeasuredValues)</span>
+        <span class="n">mass_concentration</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_2p5</span><span class="o">.</span><span class="n">physical</span>
+        <span class="n">ambient_temperature</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">ambient_temperature</span><span class="o">.</span><span class="n">degrees_celsius</span>
+
+        <span class="n">mc_1p0</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_1p0</span><span class="o">.</span><span class="n">physical</span>
+        <span class="n">mc_2p5</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_2p5</span><span class="o">.</span><span class="n">physical</span>
+        <span class="n">mc_4p0</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_4p0</span><span class="o">.</span><span class="n">physical</span>
+        <span class="n">mc_10p0</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_10p0</span><span class="o">.</span><span class="n">physical</span>
+        <span class="n">ambient_rh</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">ambient_humidity</span><span class="o">.</span><span class="n">percent_rh</span>
+        <span class="n">ambient_t</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">ambient_temperature</span><span class="o">.</span><span class="n">degrees_celsius</span>
+        <span class="n">voc_index</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">voc_index</span><span class="o">.</span><span class="n">scaled</span>
+        <span class="n">nox_index</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">nox_index</span><span class="o">.</span><span class="n">scaled</span>
+
+        <span class="c1"># Read device status</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">read_device_status</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Device Status: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+
+        <span class="c1"># Stop measurement</span>
+        <span class="n">device</span><span class="o">.</span><span class="n">stop_measurement</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Measurement stopped.&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">[</span><span class="n">mc_1p0</span><span class="p">,</span> <span class="n">mc_2p5</span><span class="p">,</span><span class="n">mc_4p0</span><span class="p">,</span> <span class="n">mc_10p0</span><span class="p">,</span> <span class="n">ambient_rh</span><span class="p">,</span> <span class="n">ambient_t</span><span class="p">,</span> <span class="n">voc_index</span><span class="p">,</span> <span class="n">nox_index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SEN5x"><a class="viewcode-back" href="../../api.html#esdn_sensing.sen5x.SEN5x">[docs]</a><span class="k">class</span> <span class="nc">SEN5x</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver class for OPC particulate sensors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mc_1p0</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mc_2p5</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mc_4p0</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mc_10p0</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ambient_rh</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ambient_t</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">voc_index</span><span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nox_index</span><span class="o">=</span> <span class="mi">0</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">mc_1p0</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">mc_2p5</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">mc_4p0</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">mc_10p0</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">ambient_rh</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">ambient_t</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">voc_index</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">nox_index</span><span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mc_1p0 (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            mc_2p5 (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            mc_4p0 (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            mc_10p0 (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            ambient_rh (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            ambient_t (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            voc_index (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">            nox_index (int, optional): _description_. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_1p0</span><span class="o">=</span> <span class="n">mc_1p0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_2p5</span><span class="o">=</span> <span class="n">mc_2p5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_4p0</span><span class="o">=</span> <span class="n">mc_4p0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mc_10p0</span><span class="o">=</span> <span class="n">mc_10p0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ambient_rh</span><span class="o">=</span> <span class="n">ambient_rh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ambient_t</span><span class="o">=</span> <span class="n">ambient_t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voc_index</span><span class="o">=</span> <span class="n">voc_index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nox_index</span><span class="o">=</span> <span class="n">nox_index</span>
+
+<div class="viewcode-block" id="SEN5x.get_data"><a class="viewcode-back" href="../../api.html#esdn_sensing.sen5x.SEN5x.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;_summary_</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sample_size (int, optional): _description_. Defaults to 10.</span>
+<span class="sd">            dec_factor (int, optional): _description_. Defaults to 100.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">)</span>
+            <span class="c1">#[mc_1p0, mc_2p5,mc_4p0, mc_10p0, ambient_rh, ambient_t, voc_index, nox_index]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">mc_1p0</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mc_2p5</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mc_4p0</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mc_10p0</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ambient_rh</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ambient_t</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">voc_index</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nox_index</span><span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+
+
+            <span class="n">mc_1p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_1p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_1p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_1p0</span><span class="p">)</span>
+
+            <span class="n">mc_2p5</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_2p5</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_2p5: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_2p5</span><span class="p">)</span>
+
+            <span class="n">mc_4p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_4p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_4p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_4p0</span><span class="p">)</span>
+
+            <span class="n">mc_10p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_10p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_10p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_10p0</span><span class="p">)</span>
+
+            <span class="n">ambient_rh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ambient_rh</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ambient_rh: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_rh</span><span class="p">)</span>
+
+            <span class="n">ambient_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ambient_t</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ambient_t: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_t</span><span class="p">)</span>
+
+            <span class="n">voc_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">voc_index</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;voc_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">voc_index</span><span class="p">)</span>
+
+            <span class="n">nox_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nox_index</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nox_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nox_index</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+            <span class="n">FEATHER_ID</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">FEATHER_ID</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_1p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">mc_1p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_2p5</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_2p5</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_4p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_4p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_10p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_10p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_rh</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_rh</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_t</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">voc_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">voc_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nox_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="n">nox_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

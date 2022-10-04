@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>esdn_sensing.hydros &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to esdn_sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><cite>hydros</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>esdn_sensing.hydros</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for esdn_sensing.hydros</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`hydros`</span>
+<span class="sd">================================================================================</span>
+
+<span class="sd">*Python library for Hydros21 or Decagon CDT-10 water level sensor.*</span>
+
+<span class="sd">**Author(s):** `Colby Sawyer &lt;https://github.com/ColbySawyer7&gt;`_</span>
+
+<span class="sd">Implementation Notes</span>
+<span class="sd">--------------------</span>
+<span class="sd">**Hardware:**</span>
+<span class="sd">Hydros 21 Conductivity, Temperature, and Depth Sensor `More Information &lt;https://www.metergroup.com/en/meter-environment/products/hydros-21-water-level-sensor-conductivity-temperature-depth&gt;`_</span>
+
+<span class="sd">**Software and Dependencies:**</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1">#import serial.tools.list_ports</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<div class="viewcode-block" id="parse_reading"><a class="viewcode-back" href="../../api.html#esdn_sensing.hydros.parse_reading">[docs]</a><span class="k">def</span> <span class="nf">parse_reading</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Takes string of values from sensor and parses them into String list</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        val (String): Unparsed string containing multiple reading from sensor ex. &quot;0+40+24.4-140&quot;</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [String]: Parsed list of strings each corresponding to a returned measurement ex. [&quot;0&quot;,&quot;+40&quot;,&quot;+24.4&quot;,&quot;-140&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[-+][0-9.]+|\D&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Hydros"><a class="viewcode-back" href="../../api.html#esdn_sensing.hydros.Hydros">[docs]</a><span class="k">class</span> <span class="nc">Hydros</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver for Hydros 12 or Decagon CDT-10 water level sensors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">water_depth</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">electrical_conductivity</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">water_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">conductivity</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance of sensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            water_depth (int, optional): Water Depth (mm). Defaults to 0.</span>
+<span class="sd">            temperature (int, optional): Temperature (celsius). Defaults to 0.</span>
+<span class="sd">            conductivity (int, optional): Conductivity (uS/cm). Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">water_depth</span> <span class="o">=</span> <span class="n">water_depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span> <span class="o">=</span> <span class="n">conductivity</span>
+
+
+
+<div class="viewcode-block" id="Hydros.get_data"><a class="viewcode-back" href="../../api.html#esdn_sensing.hydros.Hydros.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collects data from the device attached to the SDI-12 USB external board</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion] Defaults to 100.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Throws error if device is not found</span>
+<span class="sd">            ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [Bytearray]: Packaged up data to be sent via LoRa driving code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;+-&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simple SDI-12 Sensor Reader&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;+-&#39;</span> <span class="o">*</span> <span class="mi">40</span><span class="p">)</span>
+
+        <span class="n">port_names</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">ports</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">()</span>
+        <span class="n">user_port_selection</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        
+        <span class="n">ser</span><span class="o">=</span><span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">ports</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">user_port_selection</span><span class="p">)]</span><span class="o">.</span><span class="n">device</span><span class="p">,</span><span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span> <span class="c1"># delay for arduino bootloader and the 1 second delay of the adapter.</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Connecting to sensor ...&#39;</span><span class="p">)</span>
+        
+        <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;?!&#39;</span><span class="p">)</span>
+        <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n since [0-9]$ has trouble with \r</span>
+        <span class="n">m</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[0-9a-zA-Z]$&#39;</span><span class="p">,</span><span class="n">sdi_12_line</span><span class="p">)</span> <span class="c1"># having trouble with the \r</span>
+        <span class="c1">#TODO CHECK that devices exsits</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="p">:</span>
+            <span class="n">sdi_12_address</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># find address</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Sensor address:&#39;</span><span class="p">,</span> <span class="n">sdi_12_address</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;I!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sensor info:&#39;</span><span class="p">,</span><span class="n">sdi_12_line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;M!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;D0!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n</span>
+
+            <span class="n">value</span> <span class="o">=</span> <span class="n">sdi_12_line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+            <span class="n">parsed_values</span> <span class="o">=</span> <span class="n">parse_reading</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="o">=</span> <span class="mi">0</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;SENSOR ERROR: Reading from sensor doesnt match explicitly defined format.&#39;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sensor reading:&#39;</span><span class="p">,</span> <span class="n">parsed_values</span><span class="p">)</span>
+            
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+            <span class="n">FEATHER_ID</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="n">depth_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">water_depth</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Water Depth: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">depth_val</span><span class="p">)</span>
+
+            <span class="n">temp_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temp_val</span><span class="p">)</span>
+
+            <span class="n">conduc_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conductivity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">conduc_val</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">FEATHER_ID</span>
+            <span class="c1"># Water Depth</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">depth_val</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">depth_val</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="c1"># Temperature</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temp_val</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_val</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="c1">#Conductivity</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">conduc_val</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">conduc_val</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="k">return</span> <span class="n">sensor_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;ERROR: No sensor detected&#39;</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hydros &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contrib.html" />
+    <link rel="prev" title="Data from Hydros 21 or Decagon CDT-10 sensor" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Welcome to esdn_sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><cite>hydros</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-notes">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#opc"><cite>opc</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#sen5x"><cite>sen5x</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Implementation Notes</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><cite>hydros</cite></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <span class="target" id="module-esdn_sensing.hydros"></span><section id="hydros">
+<h1><cite>hydros</cite><a class="headerlink" href="#hydros" title="Permalink to this headline"></a></h1>
+<p><em>Python library for Hydros21 or Decagon CDT-10 water level sensor.</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="implementation-notes">
+<h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+Hydros 21 Conductivity, Temperature, and Depth Sensor <a class="reference external" href="https://www.metergroup.com/en/meter-environment/products/hydros-21-water-level-sensor-conductivity-temperature-depth">More Information</a></p>
+<p><strong>Software and Dependencies:</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.hydros.Hydros">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.hydros.</span></span><span class="sig-name descname"><span class="pre">Hydros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">water_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conductivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/hydros.html#Hydros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.hydros.Hydros" title="Permalink to this definition"></a></dt>
+<dd><p>Driver for Hydros 12 or Decagon CDT-10 water level sensors</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.hydros.Hydros.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/hydros.html#Hydros.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.hydros.Hydros.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached to the SDI-12 USB external board</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): Holds the decimal factor to be used for integer conversion] Defaults to 100.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: Throws error if device is not found
+ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: Packaged up data to be sent via LoRa driving code</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.hydros.parse_reading">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.hydros.</span></span><span class="sig-name descname"><span class="pre">parse_reading</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/hydros.html#parse_reading"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.hydros.parse_reading" title="Permalink to this definition"></a></dt>
+<dd><p>Takes string of values from sensor and parses them into String list</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>val (String): Unparsed string containing multiple reading from sensor ex. “0+40+24.4-140”</p>
+</dd>
+<dt>Returns:</dt><dd><p>[String]: Parsed list of strings each corresponding to a returned measurement ex. [“0”,”+40”,”+24.4”,”-140”]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.opc"></span><section id="opc">
+<h1><cite>opc</cite><a class="headerlink" href="#opc" title="Permalink to this headline"></a></h1>
+<p><em>Python library for OPC-Nx (2-3) Air Quality Sensor.</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id2">
+<h2>Implementation Notes<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.alphasense.com/products/optical-particle-counter/">OPC-N3</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing py-opc-ng library based on work from <a class="reference external" href="https://github.com/fargiolas/py-opc-ng">Fargiolas&#64;Github</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.opc.OPC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.opc.</span></span><span class="sig-name descname"><span class="pre">OPC</span></span><a class="reference internal" href="_modules/esdn_sensing/opc.html#OPC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.opc.OPC" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for OPC particulate sensors</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.opc.OPC.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/opc.html#OPC.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.opc.OPC.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, optional): [Sample size (seconds) of collection]. Defaults to 10.
+dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.opc.OPC.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">avg_pm1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_pm25</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_pm10</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">humidity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/opc.html#OPC.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.opc.OPC.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>avg_pm1 (int, optional): Average PM1. Defaults to 0.
+avg_pm25 (int, optional): Average PM2.5. Defaults to 0.
+avg_pm10 (int, optional): Average PM10. Defaults to 0.
+temperature (int, optional): Temperature. Defaults to 0.
+humidity (int, optional): Humidity. Defaults to 0.
+laser_status (int, optional): Laser Status Code. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.opc.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.opc.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/opc.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.opc.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): [Sample size (seconds) of collection]</p>
+</dd>
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.sen5x"></span><section id="sen5x">
+<h1><cite>sen5x</cite><a class="headerlink" href="#sen5x" title="Permalink to this headline"></a></h1>
+<p><em>Python library for Sensirion SEN5xAir Quality Sensor.</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id4">
+<h2>Implementation Notes<a class="headerlink" href="#id4" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://sensirion.com/products/catalog/SEN54/">Sensirion SEN-5x</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing Sensirion provided libraries. <a class="reference external" href="https://sensirion.github.io/python-i2c-driver/">More Information</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.sen5x.SEN5x">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.sen5x.</span></span><span class="sig-name descname"><span class="pre">SEN5x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mc_1p0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc_2p5</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc_4p0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mc_10p0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ambient_rh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ambient_t</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voc_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nox_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/sen5x.html#SEN5x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.sen5x.SEN5x" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for OPC particulate sensors</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.sen5x.SEN5x.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/sen5x.html#SEN5x.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.sen5x.SEN5x.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>_summary_</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, optional): _description_. Defaults to 10.
+dec_factor (int, optional): _description_. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.sen5x.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.sen5x.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/sen5x.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.sen5x.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): [Sample size (seconds) of collection]</p>
+</dd>
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Data from Hydros 21 or Decagon CDT-10 sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contrib.html" class="btn btn-neutral float-right" title="Contributing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

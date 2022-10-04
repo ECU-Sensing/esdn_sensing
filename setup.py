@@ -1,4 +1,3 @@
-#from distutils.core import setup
 from setuptools import setup
 
 setup(
@@ -9,7 +8,7 @@ setup(
   description = 'Python library to deliver sensor specific support to ESDN infrastructure',   # Give a short description about your library
   author = 'Colby Sawyer',                   # Type in your name
   author_email = 'sawyerco21@ecu.edu',      # Type in your E-Mail
-  url = 'https://esdn_sensing.github.io/esdn_sensing/',   # Provide either the link to your github or to your website
+  url = 'https://github.com/ECU-Sensing/esdn_sensing',   # Provide either the link to your github or to your website
   download_url = 'https://github.com/esdn_sensing/esdn_sensing/archive/refs/tags/v_0.1.tar.gz',    # I explain this later on
   keywords = ['sensor', 'hydros', 'cdt-10', 'water', 'generic','shim','LoRa','sensors','pm2', 'opc', 'sen', 'sen54', 'sen53', 'air', 'quality'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second

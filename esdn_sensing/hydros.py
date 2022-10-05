@@ -14,7 +14,7 @@ Hydros 21 Conductivity, Temperature, and Depth Sensor `More Information <https:/
 **Software and Dependencies:**
 
 """
-#import serial.tools.list_ports
+import serial.tools.list_ports
 import serial
 import time
 import re

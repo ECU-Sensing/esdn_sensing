@@ -7,6 +7,7 @@ esdn_sensing/hydros.py
 esdn_sensing/opc.py
 esdn_sensing/pm25.py
 esdn_sensing/sen5x.py
+esdn_sensing/sensor_error.py
 esdn_sensing/stemma_soil.py
 esdn_sensing.egg-info/PKG-INFO
 esdn_sensing.egg-info/SOURCES.txt

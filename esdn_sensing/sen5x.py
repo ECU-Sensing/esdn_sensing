@@ -18,8 +18,10 @@ Utilizing Sensirion provided libraries. `More Information <https://sensirion.git
 
 
 import time
+import logging
 from sensirion_i2c_driver import I2cConnection, LinuxI2cTransceiver
 from sensirion_i2c_sen5x import Sen5xI2cDevice
+from esdn_sensing.sensor_error import SensorError
 
 def sensor_run(sample_size):
     """Runs the sensor specific operations and collects/summarizes the data.
@@ -34,9 +36,9 @@ def sensor_run(sample_size):
         device = Sen5xI2cDevice(I2cConnection(i2c_transceiver))
 
         # Print some device information
-        print("Version: {}".format(device.get_version()))
-        print("Product Name: {}".format(device.get_product_name()))
-        print("Serial Number: {}".format(device.get_serial_number()))
+        logging.info("Version: {}".format(device.get_version()))
+        logging.info("Product Name: {}".format(device.get_product_name()))
+        logging.info("Serial Number: {}".format(device.get_serial_number()))
 
         # Perform a device reset (reboot firmware)
         device.device_reset()
@@ -44,13 +46,13 @@ def sensor_run(sample_size):
         # Start measurement
         device.start_measurement()
         # Wait until next result is available
-        print("Waiting for new data...")
+        logging.info("Waiting for new data...")
         while device.read_data_ready() is False:
             time.sleep(0.1)
 
         # Read measured values -> clears the "data ready" flag
         values = device.read_measured_values()
-        print(values)
+        logging.info(values)
 
         # Access a specific value separately (see Sen5xMeasuredValues)
         mass_concentration = values.mass_concentration_2p5.physical
@@ -67,11 +69,11 @@ def sensor_run(sample_size):
 
         # Read device status
         status = device.read_device_status()
-        print("Device Status: {}\n".format(status))
+        logging.info("Device Status: {}\n".format(status))
 
         # Stop measurement
         device.stop_measurement()
-        print("Measurement stopped.")
+        logging.info("Measurement stopped.")
         
         return [mc_1p0, mc_2p5,mc_4p0, mc_10p0, ambient_rh, ambient_t, voc_index, nox_index]
 
@@ -133,28 +135,28 @@ class SEN5x:
 
 
             mc_1p0 = int((self.mc_1p0*dec_factor))
-            print("mc_1p0: %0.1f %%" % mc_1p0)
+            logging.info("mc_1p0: %0.1f %%" % mc_1p0)
 
             mc_2p5 = int((self.mc_2p5*dec_factor))
-            print("mc_2p5: %0.1f %%" % mc_2p5)
+            logging.info("mc_2p5: %0.1f %%" % mc_2p5)
 
             mc_4p0 = int((self.mc_4p0*dec_factor))
-            print("mc_4p0: %0.1f %%" % mc_4p0)
+            logging.info("mc_4p0: %0.1f %%" % mc_4p0)
 
             mc_10p0 = int((self.mc_10p0*dec_factor))
-            print("mc_10p0: %0.1f %%" % mc_10p0)
+            logging.info("mc_10p0: %0.1f %%" % mc_10p0)
 
             ambient_rh = int((self.ambient_rh*dec_factor))
-            print("ambient_rh: %0.1f %%" % ambient_rh)
+            logging.info("ambient_rh: %0.1f %%" % ambient_rh)
 
             ambient_t = int((self.ambient_t*dec_factor))
-            print("ambient_t: %0.1f %%" % ambient_t)
+            logging.info("ambient_t: %0.1f %%" % ambient_t)
 
             voc_index = int((self.voc_index*dec_factor))
-            print("voc_index: %0.1f %%" % voc_index)
+            logging.info("voc_index: %0.1f %%" % voc_index)
 
             nox_index = int((self.nox_index*dec_factor))
-            print("nox_index: %0.1f %%" % nox_index)
+            logging.info("nox_index: %0.1f %%" % nox_index)
 
             sensor_data = bytearray(16)
             FEATHER_ID = 1
@@ -185,4 +187,4 @@ class SEN5x:
             sensor_data[16] = nox_index & 0xff
 
         except:
-            sensor_data[0]
+            raise SensorError('Unable to connect')

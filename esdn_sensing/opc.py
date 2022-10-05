@@ -16,8 +16,11 @@ Utilizing py-opc-ng library based on work from `Fargiolas@Github <https://github
 """
 
 from time import sleep
+import logging
 from usbiss.spi import SPI
 import opcng as opc
+from esdn_sensing.sensor_error import SensorError
+
 
 def sensor_run(sample_size):
     """Runs the sensor specific operations and collects/summarizes the data.
@@ -35,9 +38,9 @@ def sensor_run(sample_size):
 
     dev = opc.detect(spi)
 
-    print(f'device information: {dev.info()}')
-    print(f'serial: {dev.serial()}')
-    print(f'firmware version: {dev.serial()}')
+    logging.info(f'device information: {dev.info()}')
+    logging.info(f'serial: {dev.serial()}')
+    logging.info(f'firmware version: {dev.serial()}')
 
     total_pm1 = 0
     total_pm25 = 0
@@ -50,7 +53,7 @@ def sensor_run(sample_size):
         # query particle mass readings
         sleep(1)
         full_read = dev.pm()
-        print(full_read)
+        logging.info(full_read)
         if i != 0:    
             total_pm1 = total_pm1 + full_read['PM1']
             total_pm25 = total_pm25 + full_read['PM2.5']
@@ -68,13 +71,13 @@ def sensor_run(sample_size):
     avg_pm1 = total_pm1/sample_size
     avg_pm25 = total_pm25/sample_size
     avg_pm10 = total_pm10/sample_size
-
-    print(f'Average PM1: {avg_pm1}')
-    print(f'Average PM2.5: {avg_pm25}')
-    print(f'Average PM10: {avg_pm10}')
-    print(f'Temperature: {temperature}')
-    print(f'Humidity: {humidity}')
-    print(f'Laser Status: {laser_status}')
+    
+    logging.info(f'Average PM1: {avg_pm1}')
+    logging.info(f'Average PM2.5: {avg_pm25}')
+    logging.info(f'Average PM10: {avg_pm10}')
+    logging.info(f'Temperature: {temperature}')
+    logging.info(f'Humidity: {humidity}')
+    logging.info(f'Laser Status: {laser_status}')
 
     res[0] = avg_pm1
     res[1] = avg_pm25
@@ -135,22 +138,22 @@ class OPC:
 
 
             avg_pm1 = int((self.avg_pm1*dec_factor))
-            print("avg_pm1: %0.1f %%" % avg_pm1)
+            logging.info("avg_pm1: %0.1f %%" % avg_pm1)
 
             avg_pm25 = int((self.avg_pm25*dec_factor))
-            print("avg_pm25: %0.1f %%" % avg_pm25)
+            logging.info("avg_pm25: %0.1f %%" % avg_pm25)
 
             avg_pm10 = int((self.avg_pm10*dec_factor))
-            print("avg_pm10: %0.1f %%" % avg_pm10)
+            logging.info("avg_pm10: %0.1f %%" % avg_pm10)
 
             temperature = int((self.temperature*dec_factor))
-            print("temperature: %0.1f %%" % temperature)
+            logging.info("temperature: %0.1f %%" % temperature)
 
             humidity = int((self.humidity*dec_factor))
-            print("humidity: %0.1f %%" % humidity)
+            logging.info("humidity: %0.1f %%" % humidity)
 
             laser_status = int((self.laser_status*dec_factor))
-            print("laser_status: %0.1f %%" % laser_status)
+            logging.info("laser_status: %0.1f %%" % laser_status)
 
 
             sensor_data = bytearray(14)
@@ -177,5 +180,5 @@ class OPC:
 
             return sensor_data
 
-        except Exception as err:
-            print("Error on sensor reading: " + str(err))
+        except:
+            raise SensorError('Unable to connect')

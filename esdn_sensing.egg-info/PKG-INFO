@@ -1,9 +1,9 @@
 Metadata-Version: 2.1
 Name: esdn-sensing
-Version: 0.1.5
+Version: 0.1.6
 Summary: Python library to deliver sensor specific support to ESDN infrastructure
 Home-page: https://github.com/ECU-Sensing/esdn_sensing
-Download-URL: https://github.com/ECU-Sensing/esdn_sensing/archive/refs/tags/v_0.1.5.tar.gz
+Download-URL: https://github.com/ECU-Sensing/esdn_sensing/archive/refs/tags/v_0.1.6.tar.gz
 Author: Colby Sawyer
 Author-email: sawyerco21@ecu.edu
 License: MIT

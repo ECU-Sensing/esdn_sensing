@@ -159,32 +159,30 @@ class SEN5x:
             logging.info("nox_index: %0.1f %%" % nox_index)
 
             sensor_data = bytearray(16)
-            FEATHER_ID = 1
-            sensor_data[0] = FEATHER_ID
 
-            sensor_data[1] = (mc_1p0 >> 8) & 0xff
-            sensor_data[2]= mc_1p0 & 0xff
+            sensor_data[0] = (mc_1p0 >> 8) & 0xff
+            sensor_data[1]= mc_1p0 & 0xff
             
-            sensor_data[3] = (mc_2p5 >> 8) & 0xff
-            sensor_data[4] = mc_2p5 & 0xff
+            sensor_data[2] = (mc_2p5 >> 8) & 0xff
+            sensor_data[3] = mc_2p5 & 0xff
             
-            sensor_data[5] = (mc_4p0 >> 8) & 0xff
-            sensor_data[6] = mc_4p0 & 0xff
+            sensor_data[4] = (mc_4p0 >> 8) & 0xff
+            sensor_data[5] = mc_4p0 & 0xff
 
-            sensor_data[7] = (mc_10p0 >> 8) & 0xff
-            sensor_data[8] = mc_10p0 & 0xff
+            sensor_data[6] = (mc_10p0 >> 8) & 0xff
+            sensor_data[7] = mc_10p0 & 0xff
 
-            sensor_data[9] = (ambient_rh >> 8) & 0xff
-            sensor_data[10] = ambient_rh & 0xff
+            sensor_data[8] = (ambient_rh >> 8) & 0xff
+            sensor_data[9] = ambient_rh & 0xff
 
-            sensor_data[11] = (ambient_t >> 8) & 0xff
-            sensor_data[12] = ambient_t & 0xff
+            sensor_data[10] = (ambient_t >> 8) & 0xff
+            sensor_data[11] = ambient_t & 0xff
 
-            sensor_data[13] = (voc_index >> 8) & 0xff
-            sensor_data[14] = voc_index & 0xff
+            sensor_data[12] = (voc_index >> 8) & 0xff
+            sensor_data[13] = voc_index & 0xff
 
-            sensor_data[15] = (nox_index >> 8) & 0xff
-            sensor_data[16] = nox_index & 0xff
+            sensor_data[14] = (nox_index >> 8) & 0xff
+            sensor_data[15] = nox_index & 0xff
 
         except:
             raise SensorError('Unable to connect')

@@ -18,10 +18,13 @@ Implementation Notes
 # pylint: disable=unused-import
 import time
 import serial
+import logging
 import board
 import busio
 from digitalio import DigitalInOut, Direction, Pull
 from adafruit_pm25.i2c import PM25_I2C
+from esdn_sensing import SensorError
+
 
 class PM25:
     pm10_std= 0
@@ -78,25 +81,25 @@ class PM25:
 
         try:
             aqdata = pm25.read()
-            print("Concentration Units (standard)")
-            print("---------------------------------------")
-            print(
+            logging.info("Concentration Units (standard)")
+            logging.info("---------------------------------------")
+            logging.info(
                 "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
                 % (aqdata["pm10 standard"], aqdata["pm25 standard"], aqdata["pm100 standard"])
             )
-            print("Concentration Units (environmental)")
-            print("---------------------------------------")
-            print(
+            logging.info("Concentration Units (environmental)")
+            logging.info("---------------------------------------")
+            logging.info(
                 "PM 1.0: %d\tPM2.5: %d\tPM10: %d"
                 % (aqdata["pm10 env"], aqdata["pm25 env"], aqdata["pm100 env"])
             )
-            print("---------------------------------------")
-            print("Particles > 0.3um / 0.1L air:", aqdata["particles 03um"])
-            print("Particles > 0.5um / 0.1L air:", aqdata["particles 05um"])
-            print("Particles > 1.0um / 0.1L air:", aqdata["particles 10um"])
-            print("Particles > 2.5um / 0.1L air:", aqdata["particles 25um"])
-            print("Particles > 5.0um / 0.1L air:", aqdata["particles 50um"])
-            print("Particles > 10 um / 0.1L air:", aqdata["particles 100um"])
+            logging.info("---------------------------------------")
+            logging.info("Particles > 0.3um / 0.1L air:", aqdata["particles 03um"])
+            logging.info("Particles > 0.5um / 0.1L air:", aqdata["particles 05um"])
+            logging.info("Particles > 1.0um / 0.1L air:", aqdata["particles 10um"])
+            logging.info("Particles > 2.5um / 0.1L air:", aqdata["particles 25um"])
+            logging.info("Particles > 5.0um / 0.1L air:", aqdata["particles 50um"])
+            logging.info("Particles > 10 um / 0.1L air:", aqdata["particles 100um"])
 
             self.pm10_std= aqdata["pm10 standard"]
             self.pm25_std= aqdata["pm25 standard"]
@@ -113,83 +116,81 @@ class PM25:
 
 
             pm10_std = int((self.pm10_std*dec_factor))
-            print("pm10 standard: %0.1f %%" % pm10_std)
+            logging.info("pm10 standard: %0.1f %%" % pm10_std)
 
             pm25_std = int((self.pm25_std*dec_factor))
-            print("pm25 standard: %0.1f %%" % pm25_std)
+            logging.info("pm25 standard: %0.1f %%" % pm25_std)
 
             pm100_std = int((self.pm100_std*dec_factor))
-            print("pm100 standard: %0.1f %%" % pm100_std)
+            logging.info("pm100 standard: %0.1f %%" % pm100_std)
 
             pm10_env = int((self.pm10_env*dec_factor))
-            print("pm10 env: %0.1f %%" % pm10_env)
+            logging.info("pm10 env: %0.1f %%" % pm10_env)
 
             pm25_env = int((self.pm25_env*dec_factor))
-            print("pm25 env: %0.1f %%" % pm25_env)
+            logging.info("pm25 env: %0.1f %%" % pm25_env)
 
             pm100_env = int((self.pm100_env*dec_factor))
-            print("pm100 env: %0.1f %%" % pm100_env)
+            logging.info("pm100 env: %0.1f %%" % pm100_env)
 
             part_03um = int((self.part_03um*dec_factor))
-            print("Particles > 0.3um / 0.1L air:: %0.1f %%" % part_03um)
+            logging.info("Particles > 0.3um / 0.1L air:: %0.1f %%" % part_03um)
 
             part_05um = int((self.part_05um*dec_factor))
-            print("Particles > 0.5um / 0.1L air:: %0.1f %%" % part_05um)
+            logging.info("Particles > 0.5um / 0.1L air:: %0.1f %%" % part_05um)
 
             part_10um = int((self.part_10um*dec_factor))
-            print("Particles > 1.0um / 0.1L air:: %0.1f %%" % part_10um)
+            logging.info("Particles > 1.0um / 0.1L air:: %0.1f %%" % part_10um)
 
             part_25um = int((self.part_25um*dec_factor))
-            print("Particles > 2.5um / 0.1L air:: %0.1f %%" % part_25um)
+            logging.info("Particles > 2.5um / 0.1L air:: %0.1f %%" % part_25um)
 
             part_50um = int((self.part_50um*dec_factor))
-            print("Particles > 5.0um / 0.1L air:: %0.1f %%" % part_50um)
+            logging.info("Particles > 5.0um / 0.1L air:: %0.1f %%" % part_50um)
 
             part_100um = int((self.part_100um*dec_factor))
-            print("Particles > 10.0um / 0.1L air:: %0.1f %%" % part_100um)
+            logging.info("Particles > 10.0um / 0.1L air:: %0.1f %%" % part_100um)
  
             #print(aqdata)
             sensor_data = bytearray(24)
-            FEATHER_ID = 1
-            sensor_data[0] = FEATHER_ID
 
-            sensor_data[1] = (pm10_std >> 8) & 0xff
-            sensor_data[2]= pm10_std & 0xff
+            sensor_data[0] = (pm10_std >> 8) & 0xff
+            sensor_data[1]= pm10_std & 0xff
             
-            sensor_data[3] = (pm25_std >> 8) & 0xff
-            sensor_data[4] = pm25_std & 0xff
+            sensor_data[2] = (pm25_std >> 8) & 0xff
+            sensor_data[3] = pm25_std & 0xff
             
-            sensor_data[5] = (pm100_std >> 8) & 0xff
-            sensor_data[6] = pm100_std & 0xff
+            sensor_data[4] = (pm100_std >> 8) & 0xff
+            sensor_data[5] = pm100_std & 0xff
 
-            sensor_data[7] = (pm10_env >> 8) & 0xff
-            sensor_data[8] = pm10_env & 0xff
+            sensor_data[6] = (pm10_env >> 8) & 0xff
+            sensor_data[7] = pm10_env & 0xff
 
-            sensor_data[9] = (pm25_env >> 8) & 0xff
-            sensor_data[10] = pm25_env & 0xff
+            sensor_data[8] = (pm25_env >> 8) & 0xff
+            sensor_data[9] = pm25_env & 0xff
 
-            sensor_data[11] = (pm100_env >> 8) & 0xff
-            sensor_data[12] = pm100_env & 0xff
+            sensor_data[10] = (pm100_env >> 8) & 0xff
+            sensor_data[11] = pm100_env & 0xff
 
-            sensor_data[13] = (part_03um >> 8) & 0xff
-            sensor_data[14] = part_03um & 0xff
+            sensor_data[12] = (part_03um >> 8) & 0xff
+            sensor_data[13] = part_03um & 0xff
 
-            sensor_data[15] = (part_05um >> 8) & 0xff
-            sensor_data[16] = part_05um & 0xff
+            sensor_data[14] = (part_05um >> 8) & 0xff
+            sensor_data[15] = part_05um & 0xff
 
-            sensor_data[17] = (part_10um >> 8) & 0xff
-            sensor_data[18] = part_10um & 0xff
+            sensor_data[16] = (part_10um >> 8) & 0xff
+            sensor_data[17] = part_10um & 0xff
 
-            sensor_data[19] = (part_25um >> 8) & 0xff
-            sensor_data[20] = part_25um & 0xff
+            sensor_data[18] = (part_25um >> 8) & 0xff
+            sensor_data[19] = part_25um & 0xff
 
-            sensor_data[21] = (part_50um >> 8) & 0xff
-            sensor_data[22] = part_50um & 0xff
+            sensor_data[20] = (part_50um >> 8) & 0xff
+            sensor_data[21] = part_50um & 0xff
 
-            sensor_data[23] = (part_100um >> 8) & 0xff
-            sensor_data[24] = part_100um & 0xff
+            sensor_data[22] = (part_100um >> 8) & 0xff
+            sensor_data[23] = part_100um & 0xff
+
+            return sensor_data
 
         except: 
-            sensor_data =[0]
-
-        return sensor_data
+            raise SensorError('Unable to connect')

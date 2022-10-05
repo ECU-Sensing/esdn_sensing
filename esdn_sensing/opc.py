@@ -156,27 +156,25 @@ class OPC:
             logging.info("laser_status: %0.1f %%" % laser_status)
 
 
-            sensor_data = bytearray(14)
-            FEATHER_ID = 1
-            sensor_data[0] = FEATHER_ID
+            sensor_data = bytearray(12)
 
-            sensor_data[1] = (avg_pm1 >> 8) & 0xff
-            sensor_data[2]= avg_pm1 & 0xff
+            sensor_data[0] = (avg_pm1 >> 8) & 0xff
+            sensor_data[1]= avg_pm1 & 0xff
             
-            sensor_data[3] = (avg_pm25 >> 8) & 0xff
-            sensor_data[4] = avg_pm25 & 0xff
+            sensor_data[2] = (avg_pm25 >> 8) & 0xff
+            sensor_data[3] = avg_pm25 & 0xff
 
-            sensor_data[5] = (avg_pm10 >> 8) & 0xff
-            sensor_data[6] = avg_pm10 & 0xff
+            sensor_data[4] = (avg_pm10 >> 8) & 0xff
+            sensor_data[5] = avg_pm10 & 0xff
 
-            sensor_data[7] = (temperature >> 8) & 0xff
-            sensor_data[8] = temperature & 0xff
+            sensor_data[6] = (temperature >> 8) & 0xff
+            sensor_data[7] = temperature & 0xff
 
-            sensor_data[9] = (humidity >> 8) & 0xff
-            sensor_data[10] = humidity & 0xff
+            sensor_data[8] = (humidity >> 8) & 0xff
+            sensor_data[9] = humidity & 0xff
 
-            sensor_data[11] = (laser_status >> 8) & 0xff
-            sensor_data[12] = laser_status & 0xff
+            sensor_data[10] = (laser_status >> 8) & 0xff
+            sensor_data[11] = laser_status & 0xff
 
             return sensor_data
 

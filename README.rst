@@ -2,7 +2,7 @@ Welcome to ESDN_Sensing!
 =======================================
 
 .. image:: https://readthedocs.org/projects/esdn_sensing/badge/?version=latest
-    :target: https://docs.circuitpython.org/projects/esdn_sensing/en/latest/
+    :target: https://ecu-sensing.github.io/esdn_sensing/
     :alt: Documentation Status
 
 .. image:: https://img.shields.io/badge/Project-ESDN%20Sensing-blueviolet

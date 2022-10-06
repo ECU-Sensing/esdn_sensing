@@ -208,5 +208,7 @@ class SEN5x:
             #sensor_data[14] = (nox_index >> 8) & 0xff
             #sensor_data[15] = nox_index & 0xff
 
+            return sensor_data
+
         except:
             raise SensorError('Unable to connect')

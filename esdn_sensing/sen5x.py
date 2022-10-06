@@ -43,39 +43,63 @@ def sensor_run(sample_size):
         # Perform a device reset (reboot firmware)
         device.device_reset()
 
+        sum_mc_1p0 = 0
+        sum_mc_2p5 = 0
+        sum_mc_4p0 = 0
+        sum_mc_10p0 = 0
+        sum_ambient_rh = 0
+        sum_ambient_t = 0
+        sum_voc_index = 0
+        sum_nox_index = 0
+
         # Start measurement
         device.start_measurement()
-        # Wait until next result is available
-        logging.info("Waiting for new data...")
-        while device.read_data_ready() is False:
-            time.sleep(0.1)
+        for i in range(sample_size):
+            # Wait until next result is available
+            logging.info("Waiting for new data...")
+            while device.read_data_ready() is False:
+                time.sleep(0.1)
 
-        # Read measured values -> clears the "data ready" flag
-        values = device.read_measured_values()
-        logging.info(values)
+            # Read measured values -> clears the "data ready" flag
+            values = device.read_measured_values()
+            logging.info(values)
 
-        # Access a specific value separately (see Sen5xMeasuredValues)
-        mass_concentration = values.mass_concentration_2p5.physical
-        ambient_temperature = values.ambient_temperature.degrees_celsius
+            mc_1p0 = values.mass_concentration_1p0.physical
+            mc_2p5 = values.mass_concentration_2p5.physical
+            mc_4p0 = values.mass_concentration_4p0.physical
+            mc_10p0 = values.mass_concentration_10p0.physical
+            ambient_rh = values.ambient_humidity.percent_rh
+            ambient_t = values.ambient_temperature.degrees_celsius
+            voc_index = values.voc_index.scaled
+            nox_index = values.nox_index.scaled
 
-        mc_1p0 = values.mass_concentration_1p0.physical
-        mc_2p5 = values.mass_concentration_2p5.physical
-        mc_4p0 = values.mass_concentration_4p0.physical
-        mc_10p0 = values.mass_concentration_10p0.physical
-        ambient_rh = values.ambient_humidity.percent_rh
-        ambient_t = values.ambient_temperature.degrees_celsius
-        voc_index = values.voc_index.scaled
-        nox_index = values.nox_index.scaled
+            sum_mc_1p0 = sum_mc_1p0 + mc_1p0
+            sum_mc_2p5 = sum_mc_2p5 + mc_2p5
+            sum_mc_4p0 = sum_mc_4p0 + mc_4p0
+            sum_mc_10p0 = sum_mc_10p0 + mc_10p0
+            sum_ambient_rh = sum_ambient_rh + ambient_rh
+            sum_ambient_t = sum_ambient_t + ambient_t
+            sum_voc_index = sum_voc_index + voc_index
+            sum_nox_index = sum_nox_index + nox_index
 
-        # Read device status
-        status = device.read_device_status()
-        logging.info("Device Status: {}\n".format(status))
+            # Read device status
+            status = device.read_device_status()
+            logging.info("Device Status: {}\n".format(status))
 
         # Stop measurement
         device.stop_measurement()
         logging.info("Measurement stopped.")
-        
-        return [mc_1p0, mc_2p5,mc_4p0, mc_10p0, ambient_rh, ambient_t, voc_index, nox_index]
+
+        avg_mc_1p0 = sum_mc_1p0 /sample_size
+        avg_mc_2p5 = sum_mc_2p5 /sample_size
+        avg_mc_4p0 = sum_mc_4p0 /sample_size
+        avg_mc_10p0 = sum_mc_10p0 /sample_size
+        avg_ambient_rh = sum_ambient_rh /sample_size
+        avg_ambient_t = sum_ambient_t /sample_size
+        avg_voc_index = sum_voc_index /sample_size
+        avg_nox_index = sum_nox_index /sample_size
+
+        return [avg_mc_1p0, avg_mc_2p5, avg_mc_4p0, avg_mc_10p0, avg_ambient_rh, avg_ambient_t, avg_voc_index, avg_nox_index]
 
 class SEN5x:
     """Driver class for OPC particulate sensors

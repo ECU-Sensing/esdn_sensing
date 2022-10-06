@@ -35,7 +35,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to esdn_sensing!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to ESDN_Sensing!</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -99,8 +99,10 @@
 
 
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">sensirion_i2c_driver</span> <span class="kn">import</span> <span class="n">I2cConnection</span><span class="p">,</span> <span class="n">LinuxI2cTransceiver</span>
 <span class="kn">from</span> <span class="nn">sensirion_i2c_sen5x</span> <span class="kn">import</span> <span class="n">Sen5xI2cDevice</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
 
 <div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.sen5x.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
@@ -115,9 +117,9 @@
         <span class="n">device</span> <span class="o">=</span> <span class="n">Sen5xI2cDevice</span><span class="p">(</span><span class="n">I2cConnection</span><span class="p">(</span><span class="n">i2c_transceiver</span><span class="p">))</span>
 
         <span class="c1"># Print some device information</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_version</span><span class="p">()))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Product Name: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_product_name</span><span class="p">()))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Serial Number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Version: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_version</span><span class="p">()))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Product Name: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_product_name</span><span class="p">()))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Serial Number: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_serial_number</span><span class="p">()))</span>
 
         <span class="c1"># Perform a device reset (reboot firmware)</span>
         <span class="n">device</span><span class="o">.</span><span class="n">device_reset</span><span class="p">()</span>
@@ -125,13 +127,13 @@
         <span class="c1"># Start measurement</span>
         <span class="n">device</span><span class="o">.</span><span class="n">start_measurement</span><span class="p">()</span>
         <span class="c1"># Wait until next result is available</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Waiting for new data...&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Waiting for new data...&quot;</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">device</span><span class="o">.</span><span class="n">read_data_ready</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
         <span class="c1"># Read measured values -&gt; clears the &quot;data ready&quot; flag</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">read_measured_values</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
         <span class="c1"># Access a specific value separately (see Sen5xMeasuredValues)</span>
         <span class="n">mass_concentration</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mass_concentration_2p5</span><span class="o">.</span><span class="n">physical</span>
@@ -148,11 +150,11 @@
 
         <span class="c1"># Read device status</span>
         <span class="n">status</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">read_device_status</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Device Status: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Device Status: </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
 
         <span class="c1"># Stop measurement</span>
         <span class="n">device</span><span class="o">.</span><span class="n">stop_measurement</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Measurement stopped.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Measurement stopped.&quot;</span><span class="p">)</span>
         
         <span class="k">return</span> <span class="p">[</span><span class="n">mc_1p0</span><span class="p">,</span> <span class="n">mc_2p5</span><span class="p">,</span><span class="n">mc_4p0</span><span class="p">,</span> <span class="n">mc_10p0</span><span class="p">,</span> <span class="n">ambient_rh</span><span class="p">,</span> <span class="n">ambient_t</span><span class="p">,</span> <span class="n">voc_index</span><span class="p">,</span> <span class="n">nox_index</span><span class="p">]</span></div>
 
@@ -214,59 +216,57 @@
 
 
             <span class="n">mc_1p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_1p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_1p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_1p0</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;mc_1p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_1p0</span><span class="p">)</span>
 
             <span class="n">mc_2p5</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_2p5</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_2p5: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_2p5</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;mc_2p5: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_2p5</span><span class="p">)</span>
 
             <span class="n">mc_4p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_4p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_4p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_4p0</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;mc_4p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_4p0</span><span class="p">)</span>
 
             <span class="n">mc_10p0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">mc_10p0</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mc_10p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_10p0</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;mc_10p0: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">mc_10p0</span><span class="p">)</span>
 
             <span class="n">ambient_rh</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ambient_rh</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ambient_rh: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_rh</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ambient_rh: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_rh</span><span class="p">)</span>
 
             <span class="n">ambient_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ambient_t</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ambient_t: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_t</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ambient_t: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ambient_t</span><span class="p">)</span>
 
             <span class="n">voc_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">voc_index</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;voc_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">voc_index</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;voc_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">voc_index</span><span class="p">)</span>
 
             <span class="n">nox_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nox_index</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;nox_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nox_index</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;nox_index: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nox_index</span><span class="p">)</span>
 
             <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
-            <span class="n">FEATHER_ID</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">FEATHER_ID</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_1p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">mc_1p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_1p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">mc_1p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
             
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_2p5</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_2p5</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_2p5</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_2p5</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
             
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_4p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_4p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_4p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_4p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_10p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_10p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mc_10p0</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc_10p0</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_rh</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_rh</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_rh</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_rh</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_t</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient_t</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">ambient_t</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">voc_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="n">voc_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">voc_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">=</span> <span class="n">voc_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nox_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="n">nox_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">14</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">nox_index</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="n">nox_index</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
         <span class="k">except</span><span class="p">:</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div></div>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

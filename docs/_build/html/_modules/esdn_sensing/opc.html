@@ -35,7 +35,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to esdn_sensing!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to ESDN_Sensing!</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
 <ul>
@@ -97,8 +97,11 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">usbiss.spi</span> <span class="kn">import</span> <span class="n">SPI</span>
 <span class="kn">import</span> <span class="nn">opcng</span> <span class="k">as</span> <span class="nn">opc</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
+
 
 <div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.opc.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
@@ -116,9 +119,9 @@
 
     <span class="n">dev</span> <span class="o">=</span> <span class="n">opc</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">spi</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;device information: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;serial: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;firmware version: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;device information: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">info</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;serial: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;firmware version: </span><span class="si">{</span><span class="n">dev</span><span class="o">.</span><span class="n">serial</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="n">total_pm1</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total_pm25</span> <span class="o">=</span> <span class="mi">0</span>
@@ -131,7 +134,7 @@
         <span class="c1"># query particle mass readings</span>
         <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">full_read</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">pm</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">full_read</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">full_read</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>    
             <span class="n">total_pm1</span> <span class="o">=</span> <span class="n">total_pm1</span> <span class="o">+</span> <span class="n">full_read</span><span class="p">[</span><span class="s1">&#39;PM1&#39;</span><span class="p">]</span>
             <span class="n">total_pm25</span> <span class="o">=</span> <span class="n">total_pm25</span> <span class="o">+</span> <span class="n">full_read</span><span class="p">[</span><span class="s1">&#39;PM2.5&#39;</span><span class="p">]</span>
@@ -149,13 +152,13 @@
     <span class="n">avg_pm1</span> <span class="o">=</span> <span class="n">total_pm1</span><span class="o">/</span><span class="n">sample_size</span>
     <span class="n">avg_pm25</span> <span class="o">=</span> <span class="n">total_pm25</span><span class="o">/</span><span class="n">sample_size</span>
     <span class="n">avg_pm10</span> <span class="o">=</span> <span class="n">total_pm10</span><span class="o">/</span><span class="n">sample_size</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM1: </span><span class="si">{</span><span class="n">avg_pm1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM2.5: </span><span class="si">{</span><span class="n">avg_pm25</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM10: </span><span class="si">{</span><span class="n">avg_pm10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Temperature: </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Humidity: </span><span class="si">{</span><span class="n">humidity</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Laser Status: </span><span class="si">{</span><span class="n">laser_status</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM1: </span><span class="si">{</span><span class="n">avg_pm1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM2.5: </span><span class="si">{</span><span class="n">avg_pm25</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Average PM10: </span><span class="si">{</span><span class="n">avg_pm10</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Temperature: </span><span class="si">{</span><span class="n">temperature</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Humidity: </span><span class="si">{</span><span class="n">humidity</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Laser Status: </span><span class="si">{</span><span class="n">laser_status</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm1</span>
     <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm25</span>
@@ -216,50 +219,48 @@
 
 
             <span class="n">avg_pm1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm1: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm1</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;avg_pm1: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm1</span><span class="p">)</span>
 
             <span class="n">avg_pm25</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm25: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm25</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;avg_pm25: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm25</span><span class="p">)</span>
 
             <span class="n">avg_pm10</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm10: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm10</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;avg_pm10: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm10</span><span class="p">)</span>
 
             <span class="n">temperature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
 
             <span class="n">humidity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;humidity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">humidity</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;humidity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">humidity</span><span class="p">)</span>
 
             <span class="n">laser_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;laser_status: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">laser_status</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;laser_status: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">laser_status</span><span class="p">)</span>
 
 
-            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
-            <span class="n">FEATHER_ID</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">FEATHER_ID</span>
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm1</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span> <span class="n">avg_pm1</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm1</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">avg_pm1</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
             
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm25</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm25</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm25</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm25</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm10</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm10</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">avg_pm10</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_pm10</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">humidity</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="n">humidity</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">humidity</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">humidity</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">laser_status</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
-            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="n">laser_status</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">laser_status</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">laser_status</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
             <span class="k">return</span> <span class="n">sensor_data</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error on sensor reading: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">))</span></div></div>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

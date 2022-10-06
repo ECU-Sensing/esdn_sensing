@@ -50,7 +50,7 @@ def sensor_run(sample_size):
         sum_ambient_rh = 0
         sum_ambient_t = 0
         sum_voc_index = 0
-        sum_nox_index = 0
+        #sum_nox_index = 0
 
         # Start measurement
         device.start_measurement()
@@ -71,7 +71,7 @@ def sensor_run(sample_size):
             ambient_rh = values.ambient_humidity.percent_rh
             ambient_t = values.ambient_temperature.degrees_celsius
             voc_index = values.voc_index.scaled
-            nox_index = values.nox_index.scaled
+            #nox_index = values.nox_index.scaled
 
             sum_mc_1p0 = sum_mc_1p0 + mc_1p0
             sum_mc_2p5 = sum_mc_2p5 + mc_2p5
@@ -80,7 +80,7 @@ def sensor_run(sample_size):
             sum_ambient_rh = sum_ambient_rh + ambient_rh
             sum_ambient_t = sum_ambient_t + ambient_t
             sum_voc_index = sum_voc_index + voc_index
-            sum_nox_index = sum_nox_index + nox_index
+            #sum_nox_index = sum_nox_index + nox_index
 
             # Read device status
             status = device.read_device_status()
@@ -97,9 +97,9 @@ def sensor_run(sample_size):
         avg_ambient_rh = sum_ambient_rh /sample_size
         avg_ambient_t = sum_ambient_t /sample_size
         avg_voc_index = sum_voc_index /sample_size
-        avg_nox_index = sum_nox_index /sample_size
+        #avg_nox_index = sum_nox_index /sample_size
 
-        return [avg_mc_1p0, avg_mc_2p5, avg_mc_4p0, avg_mc_10p0, avg_ambient_rh, avg_ambient_t, avg_voc_index, avg_nox_index]
+        return [avg_mc_1p0, avg_mc_2p5, avg_mc_4p0, avg_mc_10p0, avg_ambient_rh, avg_ambient_t, avg_voc_index]
 
 class SEN5x:
     """Driver class for OPC particulate sensors
@@ -114,7 +114,7 @@ class SEN5x:
     nox_index= 0
 
 
-    def __init__(self,mc_1p0= 0,mc_2p5= 0,mc_4p0= 0,mc_10p0= 0,ambient_rh= 0,ambient_t= 0,voc_index= 0,nox_index= 0):
+    def __init__(self,mc_1p0= 0,mc_2p5= 0,mc_4p0= 0,mc_10p0= 0,ambient_rh= 0,ambient_t= 0,voc_index= 0):
         """_summary_
 
         Args:
@@ -135,7 +135,7 @@ class SEN5x:
         self.ambient_rh= ambient_rh
         self.ambient_t= ambient_t
         self.voc_index= voc_index
-        self.nox_index= nox_index
+        #self.nox_index= nox_index
 
     def get_data(self, sample_size=10, dec_factor=100):
         """_summary_
@@ -155,7 +155,7 @@ class SEN5x:
             self.ambient_rh= sensor_readings[4]
             self.ambient_t= sensor_readings[5]
             self.voc_index= sensor_readings[6]
-            self.nox_index= sensor_readings[7]
+            #self.nox_index= sensor_readings[7]
 
 
             mc_1p0 = int((self.mc_1p0*dec_factor))
@@ -179,10 +179,10 @@ class SEN5x:
             voc_index = int((self.voc_index*dec_factor))
             logging.info("voc_index: %0.1f %%" % voc_index)
 
-            nox_index = int((self.nox_index*dec_factor))
-            logging.info("nox_index: %0.1f %%" % nox_index)
+            #nox_index = int((self.nox_index*dec_factor))
+            #logging.info("nox_index: %0.1f %%" % nox_index)
 
-            sensor_data = bytearray(16)
+            sensor_data = bytearray(14)
 
             sensor_data[0] = (mc_1p0 >> 8) & 0xff
             sensor_data[1]= mc_1p0 & 0xff
@@ -205,8 +205,8 @@ class SEN5x:
             sensor_data[12] = (voc_index >> 8) & 0xff
             sensor_data[13] = voc_index & 0xff
 
-            sensor_data[14] = (nox_index >> 8) & 0xff
-            sensor_data[15] = nox_index & 0xff
+            #sensor_data[14] = (nox_index >> 8) & 0xff
+            #sensor_data[15] = nox_index & 0xff
 
         except:
             raise SensorError('Unable to connect')

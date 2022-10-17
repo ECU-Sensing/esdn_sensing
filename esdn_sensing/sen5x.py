@@ -27,18 +27,18 @@ def sensor_run(sample_size):
     """Runs the sensor specific operations and collects/summarizes the data.
 
     Args:
-        sample_size (int, mandatory): [Sample size (seconds) of collection]
+        sample_size (int, mandatory): Sample size (seconds) of collection
 
     Returns:
-        [int]: [Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])]
+        [int]: Returns array of integers mapped to the corresponding values ([avg_pm1, avg_pm25,avg_pm10, temperature, humidity, laser_status])
     """
     with LinuxI2cTransceiver('/dev/i2c-1') as i2c_transceiver:
         device = Sen5xI2cDevice(I2cConnection(i2c_transceiver))
 
         # Print some device information
-        logging.info("Version: {}".format(device.get_version()))
-        logging.info("Product Name: {}".format(device.get_product_name()))
-        logging.info("Serial Number: {}".format(device.get_serial_number()))
+        logging.debug("Version: {}".format(device.get_version()))
+        logging.debug("Product Name: {}".format(device.get_product_name()))
+        logging.debug("Serial Number: {}".format(device.get_serial_number()))
 
         # Perform a device reset (reboot firmware)
         device.device_reset()
@@ -56,13 +56,13 @@ def sensor_run(sample_size):
         device.start_measurement()
         for i in range(sample_size):
             # Wait until next result is available
-            logging.info("Waiting for new data...")
+            logging.debug("Waiting for new data...")
             while device.read_data_ready() is False:
                 time.sleep(0.1)
 
             # Read measured values -> clears the "data ready" flag
             values = device.read_measured_values()
-            logging.info(values)
+            logging.debug(values)
 
             mc_1p0 = values.mass_concentration_1p0.physical
             mc_2p5 = values.mass_concentration_2p5.physical
@@ -84,11 +84,11 @@ def sensor_run(sample_size):
 
             # Read device status
             status = device.read_device_status()
-            logging.info("Device Status: {}\n".format(status))
+            logging.debug("Device Status: {}\n".format(status))
 
         # Stop measurement
         device.stop_measurement()
-        logging.info("Measurement stopped.")
+        logging.debug("Measurement stopped.")
 
         avg_mc_1p0 = sum_mc_1p0 /sample_size
         avg_mc_2p5 = sum_mc_2p5 /sample_size
@@ -102,7 +102,7 @@ def sensor_run(sample_size):
         return [avg_mc_1p0, avg_mc_2p5, avg_mc_4p0, avg_mc_10p0, avg_ambient_rh, avg_ambient_t, avg_voc_index]
 
 class SEN5x:
-    """Driver class for OPC particulate sensors
+    """Driver class for SEN5x particulate sensors
     """
     mc_1p0= 0
     mc_2p5= 0
@@ -118,14 +118,14 @@ class SEN5x:
         """_summary_
 
         Args:
-            mc_1p0 (int, optional): _description_. Defaults to 0.
-            mc_2p5 (int, optional): _description_. Defaults to 0.
-            mc_4p0 (int, optional): _description_. Defaults to 0.
-            mc_10p0 (int, optional): _description_. Defaults to 0.
-            ambient_rh (int, optional): _description_. Defaults to 0.
-            ambient_t (int, optional): _description_. Defaults to 0.
-            voc_index (int, optional): _description_. Defaults to 0.
-            nox_index (int, optional): _description_. Defaults to 0.
+            mc_1p0 (int, optional):  . Defaults to 0.
+            mc_2p5 (int, optional):  . Defaults to 0.
+            mc_4p0 (int, optional):  . Defaults to 0.
+            mc_10p0 (int, optional):  . Defaults to 0.
+            ambient_rh (int, optional):  . Defaults to 0.
+            ambient_t (int, optional):  . Defaults to 0.
+            voc_index (int, optional):  . Defaults to 0.
+            nox_index (int, optional):  . Defaults to 0.
         """
     
         self.mc_1p0= mc_1p0
@@ -138,11 +138,17 @@ class SEN5x:
         #self.nox_index= nox_index
 
     def get_data(self, sample_size=10, dec_factor=100):
-        """_summary_
+        """Collects data from SEN5x device
 
         Args:
             sample_size (int, optional): _description_. Defaults to 10.
             dec_factor (int, optional): _description_. Defaults to 100.
+
+        Raises:
+            SensorError: Raise error if sensor is unreachable
+
+        Returns:
+            bytearray :  Packaged up data to be sent via LoRa driving code
         """
         try:
             sensor_readings = sensor_run(sample_size)
@@ -159,25 +165,25 @@ class SEN5x:
 
 
             mc_1p0 = int((self.mc_1p0*dec_factor))
-            logging.info("mc_1p0: %0.1f %%" % mc_1p0)
+            logging.debug("mc_1p0: %0.1f %%" % mc_1p0)
 
             mc_2p5 = int((self.mc_2p5*dec_factor))
-            logging.info("mc_2p5: %0.1f %%" % mc_2p5)
+            logging.debug("mc_2p5: %0.1f %%" % mc_2p5)
 
             mc_4p0 = int((self.mc_4p0*dec_factor))
-            logging.info("mc_4p0: %0.1f %%" % mc_4p0)
+            logging.debug("mc_4p0: %0.1f %%" % mc_4p0)
 
             mc_10p0 = int((self.mc_10p0*dec_factor))
-            logging.info("mc_10p0: %0.1f %%" % mc_10p0)
+            logging.debug("mc_10p0: %0.1f %%" % mc_10p0)
 
             ambient_rh = int((self.ambient_rh*dec_factor))
-            logging.info("ambient_rh: %0.1f %%" % ambient_rh)
+            logging.debug("ambient_rh: %0.1f %%" % ambient_rh)
 
             ambient_t = int((self.ambient_t*dec_factor))
-            logging.info("ambient_t: %0.1f %%" % ambient_t)
+            logging.debug("ambient_t: %0.1f %%" % ambient_t)
 
             voc_index = int((self.voc_index*dec_factor))
-            logging.info("voc_index: %0.1f %%" % voc_index)
+            logging.debug("voc_index: %0.1f %%" % voc_index)
 
             #nox_index = int((self.nox_index*dec_factor))
             #logging.info("nox_index: %0.1f %%" % nox_index)

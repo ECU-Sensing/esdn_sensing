@@ -6,3 +6,6 @@
 
 .. automodule:: esdn_sensing.sen5x
    :members:
+
+.. automodule:: esdn_sensing.pm25
+   :members:

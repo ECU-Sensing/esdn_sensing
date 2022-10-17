@@ -58,21 +58,18 @@ class Hydros:
         """Collects data from the device attached to the SDI-12 USB external board
 
         Args:
-            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion] Defaults to 100.
+            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.
 
         Raises:
-            ValueError: Throws error if device is not found
+            SensorError: Throws error if device is not found
             ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)
 
         Returns:
-            [Bytearray]: Packaged up data to be sent via LoRa driving code
+            bytearray: Packaged up data to be sent via LoRa driving code
         """
         version = '1.0'
-
-        logging.info('+-' * 40)
-        logging.info('Simple SDI-12 Sensor Reader', version)
-        logging.info('+-' * 40)
-
+        logging.debug('Simple SDI-12 Sensor Reader', version)
+        
         port_names=[]
         ports = serial.tools.list_ports.comports()
         user_port_selection=0
@@ -81,7 +78,7 @@ class Hydros:
         ser=serial.Serial(port=ports[int(user_port_selection)].device,baudrate=9600,timeout=10)
         time.sleep(2.5) # delay for arduino bootloader and the 1 second delay of the adapter.
 
-        logging.info('Connecting to sensor ...')
+        logging.debug('Connecting to sensor ...')
         
         ser.write(b'?!')
         sdi_12_line=ser.readline()
@@ -90,12 +87,12 @@ class Hydros:
         #TODO CHECK that devices exsits
         if m :
             sdi_12_address=m.group(0) # find address
-            logging.info('\nSensor address:', sdi_12_address.decode('utf-8'))
+            logging.debug('\nSensor address:', sdi_12_address.decode('utf-8'))
 
             ser.write(sdi_12_address+b'I!')
             sdi_12_line=ser.readline()
             sdi_12_line=sdi_12_line[:-2] # remove \r and \n
-            logging.info('Sensor info:',sdi_12_line.decode('utf-8'))
+            logging.debug('Sensor info:',sdi_12_line.decode('utf-8'))
 
             ser.write(sdi_12_address+b'M!')
             sdi_12_line=ser.readline()
@@ -122,13 +119,13 @@ class Hydros:
             sensor_data = bytearray(6)
 
             depth_val = int((self.water_depth*dec_factor))
-            logging.info("Water Depth: %0.1f %%" % depth_val)
+            logging.debug("Water Depth: %0.1f %%" % depth_val)
 
             temp_val = int((self.temperature*dec_factor))
-            logging.info("Temperature: %0.1f %%" % temp_val)
+            logging.debug("Temperature: %0.1f %%" % temp_val)
 
             conduc_val = int((self.electrical_conductivity*dec_factor))
-            logging.info("Conductivity: %0.1f %%" % conduc_val)
+            logging.debug("Conductivity: %0.1f %%" % conduc_val)
 
             # Water Depth
             sensor_data[0] = (depth_val >> 8) & 0xff

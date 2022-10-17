@@ -38,9 +38,9 @@ def sensor_run(sample_size):
 
     dev = opc.detect(spi)
 
-    logging.info(f'device information: {dev.info()}')
-    logging.info(f'serial: {dev.serial()}')
-    logging.info(f'firmware version: {dev.serial()}')
+    logging.debug(f'device information: {dev.info()}')
+    logging.debug(f'serial: {dev.serial()}')
+    logging.debug(f'firmware version: {dev.serial()}')
 
     total_pm1 = 0
     total_pm25 = 0
@@ -53,7 +53,7 @@ def sensor_run(sample_size):
         # query particle mass readings
         sleep(1)
         full_read = dev.pm()
-        logging.info(full_read)
+        logging.debug(full_read)
         if i != 0:    
             total_pm1 = total_pm1 + full_read['PM1']
             total_pm25 = total_pm25 + full_read['PM2.5']
@@ -72,12 +72,12 @@ def sensor_run(sample_size):
     avg_pm25 = total_pm25/sample_size
     avg_pm10 = total_pm10/sample_size
     
-    logging.info(f'Average PM1: {avg_pm1}')
-    logging.info(f'Average PM2.5: {avg_pm25}')
-    logging.info(f'Average PM10: {avg_pm10}')
-    logging.info(f'Temperature: {temperature}')
-    logging.info(f'Humidity: {humidity}')
-    logging.info(f'Laser Status: {laser_status}')
+    logging.debug(f'Average PM1: {avg_pm1}')
+    logging.debug(f'Average PM2.5: {avg_pm25}')
+    logging.debug(f'Average PM10: {avg_pm10}')
+    logging.debug(f'Temperature: {temperature}')
+    logging.debug(f'Humidity: {humidity}')
+    logging.debug(f'Laser Status: {laser_status}')
 
     res[0] = avg_pm1
     res[1] = avg_pm25
@@ -138,22 +138,22 @@ class OPC:
 
 
             avg_pm1 = int((self.avg_pm1*dec_factor))
-            logging.info("avg_pm1: %0.1f %%" % avg_pm1)
+            logging.debug("avg_pm1: %0.1f %%" % avg_pm1)
 
             avg_pm25 = int((self.avg_pm25*dec_factor))
-            logging.info("avg_pm25: %0.1f %%" % avg_pm25)
+            logging.debug("avg_pm25: %0.1f %%" % avg_pm25)
 
             avg_pm10 = int((self.avg_pm10*dec_factor))
-            logging.info("avg_pm10: %0.1f %%" % avg_pm10)
+            logging.debug("avg_pm10: %0.1f %%" % avg_pm10)
 
             temperature = int((self.temperature*dec_factor))
-            logging.info("temperature: %0.1f %%" % temperature)
+            logging.debug("temperature: %0.1f %%" % temperature)
 
             humidity = int((self.humidity*dec_factor))
-            logging.info("humidity: %0.1f %%" % humidity)
+            logging.debug("humidity: %0.1f %%" % humidity)
 
             laser_status = int((self.laser_status*dec_factor))
-            logging.info("laser_status: %0.1f %%" % laser_status)
+            logging.debug("laser_status: %0.1f %%" % laser_status)
 
 
             sensor_data = bytearray(12)

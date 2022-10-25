@@ -9,7 +9,7 @@ setup(
   author = 'Colby Sawyer',                   # Type in your name
   author_email = 'sawyerco21@ecu.edu',      # Type in your E-Mail
   url = 'https://github.com/ECU-Sensing/esdn_sensing',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/ECU-Sensing/esdn_sensing/archive/refs/tags/v_0.2.0.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/ECU-Sensing/esdn_sensing/archive/refs/tags/v_0.2.1.tar.gz',    # I explain this later on
   keywords = ['sensor', 'hydros', 'cdt-10', 'water', 'generic','shim','LoRa','sensors','pm2', 'opc', 'sen', 'sen54', 'sen53', 'air', 'quality'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
           'pyserial',

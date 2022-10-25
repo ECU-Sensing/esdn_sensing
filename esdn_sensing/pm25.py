@@ -23,7 +23,7 @@ import board
 import busio
 from digitalio import DigitalInOut, Direction, Pull
 from adafruit_pm25.i2c import PM25_I2C
-from esdn_sensing import SensorError
+from esdn_sensing.sensor_error import SensorError
 
 def sensor_run(sample_size):
     """Runs the sensor specific operations and collects/summarizes the data.

@@ -45,7 +45,7 @@ def sensor_run(sample_size):
     # reset_pin.value = False
 
     # For use with Raspberry Pi/Linux:
-    uart = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=0.25)
+    #uart = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=0.25)
 
 
     # Connect to a PM2.5 sensor over UART

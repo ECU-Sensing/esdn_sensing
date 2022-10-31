@@ -2,11 +2,11 @@
 
 For specific user:
 
-    pip3 install esdn_sensing
+    pip3 install esdn-sensing
 
 For system-wide installation:
 
-    sudo pip3 install esdn_sensing
+    sudo pip3 install esdn-sensing
 
 ## Quickstart
 

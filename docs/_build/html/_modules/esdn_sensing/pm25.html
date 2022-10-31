@@ -105,7 +105,7 @@
 <span class="kn">import</span> <span class="nn">busio</span>
 <span class="kn">from</span> <span class="nn">digitalio</span> <span class="kn">import</span> <span class="n">DigitalInOut</span><span class="p">,</span> <span class="n">Direction</span><span class="p">,</span> <span class="n">Pull</span>
 <span class="kn">from</span> <span class="nn">adafruit_pm25.i2c</span> <span class="kn">import</span> <span class="n">PM25_I2C</span>
-<span class="kn">from</span> <span class="nn">esdn_sensing</span> <span class="kn">import</span> <span class="n">SensorError</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
 
 <div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.pm25.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
@@ -127,7 +127,7 @@
     <span class="c1"># reset_pin.value = False</span>
 
     <span class="c1"># For use with Raspberry Pi/Linux:</span>
-    <span class="n">uart</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s2">&quot;/dev/ttyS0&quot;</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="c1">#uart = serial.Serial(&quot;/dev/ttyS0&quot;, baudrate=9600, timeout=0.25)</span>
 
 
     <span class="c1"># Connect to a PM2.5 sensor over UART</span>

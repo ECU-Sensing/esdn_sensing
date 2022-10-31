@@ -86,6 +86,36 @@
 <a class="reference external image-reference" href="https://ecu-sensing.github.io/esdn_sensing/"><img alt="Documentation Status" src="https://readthedocs.org/projects/esdn_sensing/badge/?version=latest" /></a>
 <a class="reference external image-reference" href="https://github.com/ECU-Sensing/esdn_sensing"><img alt="Project" src="https://img.shields.io/badge/Project-ESDN%20Sensing-blueviolet" /></a>
 <a class="reference external image-reference" href="https://www.python.org/"><img alt="Language" src="https://img.shields.io/badge/language-Python-blue" /></a>
+<section id="installing-from-pypi">
+<h2>Installing from PyPi<a class="headerlink" href="#installing-from-pypi" title="Permalink to this headline"></a></h2>
+<p>For specific user:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip3 install esdn_sensing
+</pre></div>
+</div>
+<p>For system-wide installation:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo pip3 install esdn_sensing
+</pre></div>
+</div>
+</section>
+<section id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>from esdn_sensing import Hydros, SensorError
+import logging
+import sys
+
+#//=========================================
+def get_data():
+    try:
+        sensor_data = Hydros().get_data()
+    except (FunctionTimedOut, SensorError) as err:
+        exception = 3
+        print(err)
+
+    return sensor_data
+#//=========================================
+</pre></div>
+</div>
+</section>
 </section>
 <section id="table-of-contents">
 <h1>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline"></a></h1>

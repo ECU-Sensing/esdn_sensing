@@ -13,3 +13,5 @@ Welcome to ESDN_Sensing!
     :target: https://www.python.org/
     :alt: Language
 
+.. include:: ../QUICKSTART.md
+   :parser: myst_parser.sphinx_

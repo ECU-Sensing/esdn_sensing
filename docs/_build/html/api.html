@@ -628,12 +628,51 @@ satellites (int, optional): Available Satellites count. Defaults to 0.</p>
 <p><strong>Hardware:</strong>
 * <a href="#id21"><span class="problematic" id="id22">`</span></a>Stemma Soil Sensor <a href="#id23"><span class="problematic" id="id24">`</span></a>_</p>
 <p><strong>Software and Dependencies:</strong></p>
-<dl class="py function">
-<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.test">
-<span class="sig-prename descclassname"><span class="pre">esdn_sensing.stemma_soil.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.test" title="Permalink to this definition"></a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.StemmaSoil">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.stemma_soil.</span></span><span class="sig-name descname"><span class="pre">StemmaSoil</span></span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#StemmaSoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.StemmaSoil" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for Stemma Soil Moisture sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.StemmaSoil.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#StemmaSoil.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.StemmaSoil.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.StemmaSoil.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moisture</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#StemmaSoil.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.StemmaSoil.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>temperature (int, optional): Temperature (Celcius). Defaults to 0.
+moisture (int, optional): Moisture. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.StemmaSoil.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#StemmaSoil.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.StemmaSoil.test" title="Permalink to this definition"></a></dt>
 <dd><p>Test that the device is connected and prints sample data</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>[int]: [Temperature, Moisture_Level]</p>
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.stemma_soil.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([temperature, moisture])]</p>
 </dd>
 </dl>
 </dd></dl>

@@ -107,12 +107,14 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">board</span>
 <span class="kn">from</span> <span class="nn">adafruit_seesaw.seesaw</span> <span class="kn">import</span> <span class="n">Seesaw</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
 
-<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+<div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        [int]: [Temperature, Moisture_Level]</span>
+<span class="sd">        [int]: [Returns array of integers mapped to the corresponding values ([temperature, moisture])]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">i2c_bus</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">I2C</span><span class="p">()</span>
     <span class="n">ss</span> <span class="o">=</span> <span class="n">Seesaw</span><span class="p">(</span><span class="n">i2c_bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="mh">0x36</span><span class="p">)</span>
@@ -121,8 +123,83 @@
     <span class="c1"># read temperature from the temperature sensor</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">get_temp</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temp: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  moisture: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">touch</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;temp: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  moisture: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">touch</span><span class="p">))</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">temp</span><span class="p">,</span> <span class="n">touch</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="StemmaSoil"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.StemmaSoil">[docs]</a><span class="k">class</span> <span class="nc">StemmaSoil</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver class for Stemma Soil Moisture sensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">moisture</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="StemmaSoil.init"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.StemmaSoil.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">moisture</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance of sensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            temperature (int, optional): Temperature (Celcius). Defaults to 0.</span>
+<span class="sd">            moisture (int, optional): Moisture. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moisture</span> <span class="o">=</span> <span class="n">moisture</span></div>
+
+<div class="viewcode-block" id="StemmaSoil.get_data"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.StemmaSoil.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collects data from the device attached via the sensor_run method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           [Bytearray]: [Packaged up data to be sent via LoRa driving code]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moisture</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+
+
+            <span class="n">temperature</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+
+            <span class="n">moisture</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">moisture</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;moisture </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">moisture</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">temperature</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">moisture</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">moisture</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="k">return</span> <span class="n">sensor_data</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StemmaSoil.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.stemma_soil.StemmaSoil.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">moisture</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+
+
+                <span class="n">temperature</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+
+                <span class="n">moisture</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">moisture</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;moisture </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">moisture</span><span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
+
 </pre></div>
 
            </div>

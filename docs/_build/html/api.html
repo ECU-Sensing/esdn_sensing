@@ -62,6 +62,34 @@
 <li class="toctree-l2"><a class="reference internal" href="#id7">Implementation Notes</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#break-beam"><cite>break_beam</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id10">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#ltr303"><cite>ltr303</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id13">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#ltr390"><cite>ltr390</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id15">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#minigps"><cite>minigps</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id17">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#stemma-soil"><cite>stemma_soil</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id20">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#us100"><cite>us100</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id26">Implementation Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#vl680x"><cite>vl680x</cite></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id29">Implementation Notes</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -118,6 +146,19 @@ Hydros 21 Conductivity, Temperature, and Depth Sensor <a class="reference extern
 ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)</p>
 </dd>
 <dt>Returns:</dt><dd><p>bytearray: Packaged up data to be sent via LoRa driving code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.hydros.Hydros.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/hydros.html#Hydros.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.hydros.Hydros.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.</p>
+</dd>
+<dt>Raises:</dt><dd><p>SensorError: Throws error if device is not found
+ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -180,6 +221,17 @@ laser_status (int, optional): Laser Status Code. Defaults to 0.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.opc.OPC.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/opc.html#OPC.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.opc.OPC.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, optional): [Sample size (seconds) of collection]. Defaults to 10.
+dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -221,6 +273,19 @@ dec_factor (int, optional): _description_. Defaults to 100.</p>
 <dt>Raises:</dt><dd><p>SensorError: Raise error if sensor is unreachable</p>
 </dd>
 <dt>Returns:</dt><dd><p>bytearray :  Packaged up data to be sent via LoRa driving code</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.sen5x.SEN5x.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/sen5x.html#SEN5x.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.sen5x.SEN5x.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, optional): _description_. Defaults to 10.
+dec_factor (int, optional): _description_. Defaults to 100.</p>
+</dd>
+<dt>Raises:</dt><dd><p>SensorError: Raise error if sensor is unreachable</p>
 </dd>
 </dl>
 </dd></dl>
@@ -269,6 +334,19 @@ dec_factor (int, optional): Holds the decimal factor to be used for integer conv
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.pm25.PM25.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/pm25.html#PM25.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.pm25.PM25.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, optional): Size of sample in seconds. Defaults to 10.
+dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.</p>
+</dd>
+<dt>Raises:</dt><dd><p>SensorError: Raise error if sensor is unreachable</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -281,6 +359,409 @@ dec_factor (int, optional): Holds the decimal factor to be used for integer conv
 <dt>Raises:</dt><dd><p>SensorError: Raises error if sensor is unreachable</p>
 </dd>
 <dt>Returns:</dt><dd><p>[float]: Returns library storing [“pm10 standard”, “pm25 standard”,”pm100 standard”,”pm10 env”,”pm25 env”,”pm100 env”,”particles 03um”,”particles 05um”,”particles 10um”,”particles 25um”,”particles 50um”,”particles 100um”]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.break_beam"></span><section id="break-beam">
+<h1><cite>break_beam</cite><a class="headerlink" href="#break-beam" title="Permalink to this headline"></a></h1>
+<p><em>Python library for LTR-390 Visible Light Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id10">
+<h2>Implementation Notes<a class="headerlink" href="#id10" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/2167">Break Beam</a></p>
+<p><strong>Software and Dependencies:</strong></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.break_beam.BreakBeam">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.break_beam.</span></span><span class="sig-name descname"><span class="pre">BreakBeam</span></span><a class="reference internal" href="_modules/esdn_sensing/break_beam.html#BreakBeam"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.break_beam.BreakBeam" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for LTR 390 Light Sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.break_beam.BreakBeam.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/break_beam.html#BreakBeam.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.break_beam.BreakBeam.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): [Sample size (seconds) of collection]
+dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.break_beam.BreakBeam.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">broken</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_breaks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/break_beam.html#BreakBeam.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.break_beam.BreakBeam.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>uv (int, optional): Calculated UV value. Defaults to 0.
+ambient_light (int, optional): Measure ambient light level. Defaults to 0.
+uvi (int, optional): UV Index, based upon the rated sensitivity, of 1 UVI per 2300 counts at 18x gain factor and 20 bit-resolution (default). Defaults to 0.
+lux (int, optional): Calculated light value. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.break_beam.BreakBeam.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/break_beam.html#BreakBeam.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.break_beam.BreakBeam.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): [Sample size (seconds) of collection]
+dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.break_beam.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.break_beam.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/break_beam.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.break_beam.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): Sample size (seconds) of sample window</p>
+</dd>
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([broken, total_breaks)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.ltr303"></span><section id="ltr303">
+<h1><cite>ltr303</cite><a class="headerlink" href="#ltr303" title="Permalink to this headline"></a></h1>
+<p><em>Python library for LTR-303 Visible Light Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id13">
+<h2>Implementation Notes<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/5610">LTR-303</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing circuit python library based on work from <a href="#id31"><span class="problematic" id="id32">`Adafruit &lt;https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303/blob/main`_</span></a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.ltr303.LTR303">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.ltr303.</span></span><span class="sig-name descname"><span class="pre">LTR303</span></span><a class="reference internal" href="_modules/esdn_sensing/ltr303.html#LTR303"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr303.LTR303" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for LTR Light Sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr303.LTR303.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr303.html#LTR303.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr303.LTR303.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr303.LTR303.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">visible_light</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infrared_light</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr303.html#LTR303.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr303.LTR303.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>visible_light (int, optional): Visible Light plus Infrared. Defaults to 0.
+infrared_light (int, optional): Infrared light. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr303.LTR303.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr303.html#LTR303.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr303.LTR303.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.ltr303.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.ltr303.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr303.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr303.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([visible_light, infrared_light])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.ltr390"></span><section id="ltr390">
+<h1><cite>ltr390</cite><a class="headerlink" href="#ltr390" title="Permalink to this headline"></a></h1>
+<p><em>Python library for LTR-390 Visible Light Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id15">
+<h2>Implementation Notes<a class="headerlink" href="#id15" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/5610">LTR-390</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing circuit python library based on work from <a class="reference external" href="https://github.com/adafruit/Adafruit_CircuitPython_LTR390">Adafruit</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.ltr390.LTR390">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.ltr390.</span></span><span class="sig-name descname"><span class="pre">LTR390</span></span><a class="reference internal" href="_modules/esdn_sensing/ltr390.html#LTR390"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr390.LTR390" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for LTR 390 Light Sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr390.LTR390.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr390.html#LTR390.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr390.LTR390.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr390.LTR390.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ambient_light</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uvi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr390.html#LTR390.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr390.LTR390.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>uv (int, optional): Calculated UV value. Defaults to 0.
+ambient_light (int, optional): Measure ambient light level. Defaults to 0.
+uvi (int, optional): UV Index, based upon the rated sensitivity, of 1 UVI per 2300 counts at 18x gain factor and 20 bit-resolution (default). Defaults to 0.
+lux (int, optional): Calculated light value. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.ltr390.LTR390.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr390.html#LTR390.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr390.LTR390.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.ltr390.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.ltr390.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/ltr390.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.ltr390.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([uv, ambient_light, uvi, lux])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.minigps"></span><section id="minigps">
+<h1><cite>minigps</cite><a class="headerlink" href="#minigps" title="Permalink to this headline"></a></h1>
+<p><em>Python library for LTR-390 Visible Light Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id17">
+<h2>Implementation Notes<a class="headerlink" href="#id17" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/5610">Mini GPS</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing circuit python library based on work from <a class="reference external" href="https://github.com/adafruit/Adafruit_CircuitPython_GPS">Adafruit</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.minigps.MiniGPS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.minigps.</span></span><span class="sig-name descname"><span class="pre">MiniGPS</span></span><a class="reference internal" href="_modules/esdn_sensing/minigps.html#MiniGPS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.minigps.MiniGPS" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for MiniGPS sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.minigps.MiniGPS.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/minigps.html#MiniGPS.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.minigps.MiniGPS.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.minigps.MiniGPS.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">long_deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">long_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">satellites</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/minigps.html#MiniGPS.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.minigps.MiniGPS.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>long_deg (int, optional): Longitude Degrees. Defaults to 0.
+long_min (int, optional): Longitude Minutes. Defaults to 0.
+lat_def (int, optional): Latitude Degrees. Defaults to 0.
+lat_min (int, optional): Latitude Minutes. Defaults to 0.
+satellites (int, optional): Available Satellites count. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.minigps.MiniGPS.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/minigps.html#MiniGPS.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.minigps.MiniGPS.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.minigps.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.minigps.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/minigps.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.minigps.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([longitude_degrees, longitude_minutes, latitude_degrees, latitude_minutes, satellites])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.stemma_soil"></span><section id="stemma-soil">
+<h1><cite>stemma_soil</cite><a class="headerlink" href="#stemma-soil" title="Permalink to this headline"></a></h1>
+<p>Python library for Hydros21 or Decagon CDT-10 water level sensor.</p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id20">
+<h2>Implementation Notes<a class="headerlink" href="#id20" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+* <a href="#id21"><span class="problematic" id="id22">`</span></a>Stemma Soil Sensor <a href="#id23"><span class="problematic" id="id24">`</span></a>_</p>
+<p><strong>Software and Dependencies:</strong></p>
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.stemma_soil.test">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.stemma_soil.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/stemma_soil.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.stemma_soil.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Temperature, Moisture_Level]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.us100"></span><section id="us100">
+<h1><cite>us100</cite><a class="headerlink" href="#us100" title="Permalink to this headline"></a></h1>
+<p><em>Python library for US-100 Ultrasonic Distance Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id26">
+<h2>Implementation Notes<a class="headerlink" href="#id26" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/4019">US-100</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing circuit python library based on work from <a class="reference external" href="https://github.com/adafruit/Adafruit_CircuitPython_US100">Adafruit</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.us100.US100">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.us100.</span></span><span class="sig-name descname"><span class="pre">US100</span></span><a class="reference internal" href="_modules/esdn_sensing/us100.html#US100"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.us100.US100" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for US-100 Distance Detection Sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.us100.US100.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/us100.html#US100.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.us100.US100.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.us100.US100.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/us100.html#US100.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.us100.US100.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>distance (int, optional): Distance measured(mm). Defaults to 0.
+temperature (int, optional): Temperature. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.us100.US100.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/us100.html#US100.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.us100.US100.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.us100.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.us100.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/us100.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.us100.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([distance, temperature])]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<span class="target" id="module-esdn_sensing.vl6180x"></span><section id="vl680x">
+<h1><cite>vl680x</cite><a class="headerlink" href="#vl680x" title="Permalink to this headline"></a></h1>
+<p><em>Python library for VL6180x Time of Flight Distance Ranging Sensor</em></p>
+<p><strong>Author(s):</strong> <a class="reference external" href="https://github.com/ColbySawyer7">Colby Sawyer</a></p>
+<section id="id29">
+<h2>Implementation Notes<a class="headerlink" href="#id29" title="Permalink to this headline"></a></h2>
+<p><strong>Hardware:</strong>
+<a class="reference external" href="https://www.adafruit.com/product/3316">Vl6180x ToF</a></p>
+<p><strong>Software and Dependencies:</strong>
+Utilizing circuit python library based on work from <a class="reference external" href="https://github.com/adafruit/Adafruit_CircuitPython_VL6180X">Adafruit</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="esdn_sensing.vl6180x.VL6180x">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">esdn_sensing.vl6180x.</span></span><span class="sig-name descname"><span class="pre">VL6180x</span></span><a class="reference internal" href="_modules/esdn_sensing/vl6180x.html#VL6180x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.vl6180x.VL6180x" title="Permalink to this definition"></a></dt>
+<dd><p>Driver class for VL6180X Time of Flight Distance Ranging Sensor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.vl6180x.VL6180x.get_data">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/vl6180x.html#VL6180x.get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.vl6180x.VL6180x.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Collects data from the device attached via the sensor_run method</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+<dt>Returns:</dt><dd><p>[Bytearray]: [Packaged up data to be sent via LoRa driving code]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.vl6180x.VL6180x.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">range_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">range_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lux_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lux_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lux_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/vl6180x.html#VL6180x.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.vl6180x.VL6180x.init" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize instance of sensor</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>range_min (int, optional): Range (mm) minimum during sample window. Defaults to 0.
+range_max (int, optional): Range (mm) maximum during sample window. Defaults to 0.
+range_avg (int, optional): Range (mm) average during sample window. Defaults to 0.
+lux_min (int, optional): Lux minimum during sample window. Defaults to 0.
+lux_max (int, optional): Lux maximum during sample window. Defaults to 0.
+lux_avg (int, optional): Lux average during sample window. Defaults to 0.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="esdn_sensing.vl6180x.VL6180x.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/vl6180x.html#VL6180x.test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.vl6180x.VL6180x.test" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the device is connected and prints sample data</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="esdn_sensing.vl6180x.sensor_run">
+<span class="sig-prename descclassname"><span class="pre">esdn_sensing.vl6180x.</span></span><span class="sig-name descname"><span class="pre">sensor_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sample_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/esdn_sensing/vl6180x.html#sensor_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#esdn_sensing.vl6180x.sensor_run" title="Permalink to this definition"></a></dt>
+<dd><p>Runs the sensor specific operations and collects/summarizes the data.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>sample_size (int, mandatory): The number of seconds that the sensor will sample</p>
+</dd>
+<dt>Returns:</dt><dd><p>[int]: [Returns array of integers mapped to the corresponding values ([range_min, range_max, range_avg, lux_min, lux_max, lux_avg])]</p>
 </dd>
 </dl>
 </dd></dl>

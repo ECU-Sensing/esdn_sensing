@@ -1,2 +1,9 @@
 pyserial
 myst_parser
+adafruit-circuitpython-pm25
+adafruit-circuitpython-ltr329-ltr303
+adafruit-circuitpython-ltr390
+adafruit-circuitpython-gps
+adafruit-circuitpython-us100
+adafruit-circuitpython-vl6180x
+aadfruit-circuitpython-seesaw

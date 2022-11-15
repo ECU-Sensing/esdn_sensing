@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -319,6 +320,72 @@
             <span class="n">sensor_data</span><span class="p">[</span><span class="mi">23</span><span class="p">]</span> <span class="o">=</span> <span class="n">part_100um</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
             <span class="k">return</span> <span class="n">sensor_data</span>
+
+        <span class="k">except</span><span class="p">:</span> 
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to read&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PM25.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.pm25.PM25.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sample_size (int, optional): Size of sample in seconds. Defaults to 10.</span>
+<span class="sd">            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SensorError: Raise error if sensor is unreachable</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">aqdata</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm10_std</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm10 standard&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm25_std</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm25 standard&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm100_std</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm100 standard&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm10_env</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm10 env&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm25_env</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm25 env&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pm100_env</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;pm100 env&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_03um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 03um&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_05um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 05um&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_10um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 10um&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_25um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 25um&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_50um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 50um&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">part_100um</span><span class="o">=</span> <span class="n">aqdata</span><span class="p">[</span><span class="s2">&quot;particles 100um&quot;</span><span class="p">]</span>
+
+            <span class="n">pm10_std</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm10_std</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm10 standard: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm10_std</span><span class="p">)</span>
+
+            <span class="n">pm25_std</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm25_std</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm25 standard: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm25_std</span><span class="p">)</span>
+
+            <span class="n">pm100_std</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm100_std</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm100 standard: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm100_std</span><span class="p">)</span>
+
+            <span class="n">pm10_env</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm10_env</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm10 env: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm10_env</span><span class="p">)</span>
+
+            <span class="n">pm25_env</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm25_env</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm25 env: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm25_env</span><span class="p">)</span>
+
+            <span class="n">pm100_env</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">pm100_env</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pm100 env: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pm100_env</span><span class="p">)</span>
+
+            <span class="n">part_03um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_03um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 0.3um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_03um</span><span class="p">)</span>
+
+            <span class="n">part_05um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_05um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 0.5um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_05um</span><span class="p">)</span>
+
+            <span class="n">part_10um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_10um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 1.0um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_10um</span><span class="p">)</span>
+
+            <span class="n">part_25um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_25um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 2.5um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_25um</span><span class="p">)</span>
+
+            <span class="n">part_50um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_50um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 5.0um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_50um</span><span class="p">)</span>
+
+            <span class="n">part_100um</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">part_100um</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Particles &gt; 10.0um / 0.1L air:: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">part_100um</span><span class="p">)</span>
 
         <span class="k">except</span><span class="p">:</span> 
             <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to read&#39;</span><span class="p">)</span></div></div>

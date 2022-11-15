@@ -141,3 +141,75 @@ class Hydros:
         else:
             raise SensorError('Unable to connect')
 
+    def test(self, dec_factor=100):
+        """Test that the device is connected and prints sample data
+
+        Args:
+            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.
+
+        Raises:
+            SensorError: Throws error if device is not found
+            ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)
+
+        """
+        version = '1.0'
+        print('Simple SDI-12 Sensor Reader', version)
+        
+        port_names=[]
+        ports = serial.tools.list_ports.comports()
+        user_port_selection=0
+        i=0
+        
+        ser=serial.Serial(port=ports[int(user_port_selection)].device,baudrate=9600,timeout=10)
+        time.sleep(2.5) # delay for arduino bootloader and the 1 second delay of the adapter.
+
+        print('Connecting to sensor ...')
+        
+        ser.write(b'?!')
+        sdi_12_line=ser.readline()
+        sdi_12_line=sdi_12_line[:-2] # remove \r and \n since [0-9]$ has trouble with \r
+        m=re.search(b'[0-9a-zA-Z]$',sdi_12_line) # having trouble with the \r
+        #TODO CHECK that devices exsits
+        if m :
+            sdi_12_address=m.group(0) # find address
+            print('\nSensor address:', sdi_12_address.decode('utf-8'))
+
+            ser.write(sdi_12_address+b'I!')
+            sdi_12_line=ser.readline()
+            sdi_12_line=sdi_12_line[:-2] # remove \r and \n
+            print('Sensor info:',sdi_12_line.decode('utf-8'))
+
+            ser.write(sdi_12_address+b'M!')
+            sdi_12_line=ser.readline()
+            sdi_12_line=ser.readline()
+            ser.write(sdi_12_address+b'D0!')
+            sdi_12_line=ser.readline()
+            sdi_12_line=sdi_12_line[:-2] # remove \r and \n
+
+            value = sdi_12_line.decode('utf-8')
+
+            parsed_values = parse_reading(value)
+            if len(parsed_values) >= 3:
+                self.depth = float(parsed_values[0])
+                self.temperature = float(parsed_values[1])
+                self.electrical_conductivity = float(parsed_values[2])
+            else:
+                self.depth = 0
+                self.temperature = 0
+                self.electrical_conductivity= 0
+                raise SensorError('Reading does not match explicitly defined format.')
+
+            print('Sensor reading:', parsed_values)
+
+            depth_val = int((self.water_depth*dec_factor))
+            print("Water Depth: %0.1f %%" % depth_val)
+
+            temp_val = int((self.temperature*dec_factor))
+            print("Temperature: %0.1f %%" % temp_val)
+
+            conduc_val = int((self.electrical_conductivity*dec_factor))
+            print("Conductivity: %0.1f %%" % conduc_val)
+
+        else:
+            raise SensorError('Unable to connect')
+

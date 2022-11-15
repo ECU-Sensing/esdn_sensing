@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -261,7 +262,47 @@
             <span class="k">return</span> <span class="n">sensor_data</span>
 
         <span class="k">except</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OPC.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.opc.OPC.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                sample_size (int, optional): [Sample size (seconds) of collection]. Defaults to 10.</span>
+<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">(</span><span class="n">sample_size</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">humidity</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+
+
+                <span class="n">avg_pm1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm1</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm1: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm1</span><span class="p">)</span>
+
+                <span class="n">avg_pm25</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm25</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm25: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm25</span><span class="p">)</span>
+
+                <span class="n">avg_pm10</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_pm10</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;avg_pm10: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">avg_pm10</span><span class="p">)</span>
+
+                <span class="n">temperature</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+
+                <span class="n">humidity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">humidity</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;humidity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">humidity</span><span class="p">)</span>
+
+                <span class="n">laser_status</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">laser_status</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;laser_status: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">laser_status</span><span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

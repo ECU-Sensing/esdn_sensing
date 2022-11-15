@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>esdn_sensing.us100 &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to ESDN_Sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><cite>hydros</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr303"><cite>ltr303</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr390"><cite>ltr390</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#minigps"><cite>minigps</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#us100"><cite>us100</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#vl680x"><cite>vl680x</cite></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>esdn_sensing.us100</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for esdn_sensing.us100</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`us100`</span>
+<span class="sd">================================================================================</span>
+
+<span class="sd">*Python library for US-100 Ultrasonic Distance Sensor*</span>
+
+<span class="sd">**Author(s):** `Colby Sawyer &lt;https://github.com/ColbySawyer7&gt;`_</span>
+
+<span class="sd">Implementation Notes</span>
+<span class="sd">--------------------</span>
+<span class="sd">**Hardware:**</span>
+<span class="sd">`US-100 &lt;https://www.adafruit.com/product/4019&gt;`_</span>
+
+<span class="sd">**Software and Dependencies:**</span>
+<span class="sd">Utilizing circuit python library based on work from `Adafruit &lt;https://github.com/adafruit/Adafruit_CircuitPython_US100&gt;`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
+<span class="kn">import</span> <span class="nn">adafruit_us100</span>
+
+<div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.us100.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [int]: [Returns array of integers mapped to the corresponding values ([distance, temperature])]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uart</span> <span class="o">=</span> <span class="n">busio</span><span class="o">.</span><span class="n">UART</span><span class="p">(</span><span class="n">board</span><span class="o">.</span><span class="n">TX</span><span class="p">,</span> <span class="n">board</span><span class="o">.</span><span class="n">RX</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">)</span>
+    <span class="c1"># Create a US-100 module instance.</span>
+    <span class="n">us100</span> <span class="o">=</span> <span class="n">adafruit_us100</span><span class="o">.</span><span class="n">US100</span><span class="p">(</span><span class="n">uart</span><span class="p">)</span>
+
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">us100</span><span class="o">.</span><span class="n">distance</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">us100</span><span class="o">.</span><span class="n">temperature</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Distance:&quot;</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">Temperature:&quot;</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">distance</span><span class="p">,</span> <span class="n">temp</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="US100"><a class="viewcode-back" href="../../api.html#esdn_sensing.us100.US100">[docs]</a><span class="k">class</span> <span class="nc">US100</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver class for US-100 Distance Detection Sensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">distance</span>  <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="US100.init"><a class="viewcode-back" href="../../api.html#esdn_sensing.us100.US100.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">distance</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance of sensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            distance (int, optional): Distance measured(mm). Defaults to 0.</span>
+<span class="sd">            temperature (int, optional): Temperature. Defaults to 0.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span></div>
+
+<div class="viewcode-block" id="US100.get_data"><a class="viewcode-back" href="../../api.html#esdn_sensing.us100.US100.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collects data from the device attached via the sensor_run method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           [Bytearray]: [Packaged up data to be sent via LoRa driving code]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+            <span class="n">distance</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;distance: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">distance</span><span class="p">)</span>
+
+            <span class="n">temperature</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;temperature </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">distance</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="k">return</span> <span class="n">sensor_data</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="US100.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.us100.US100.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+                <span class="n">distance</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;distance: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">distance</span><span class="p">)</span>
+
+                <span class="n">temperature</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;temperature </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temperature</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

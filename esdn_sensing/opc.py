@@ -180,3 +180,43 @@ class OPC:
 
         except:
             raise SensorError('Unable to connect')
+
+    def test(self, sample_size=10, dec_factor=100):
+            """Test that the device is connected and prints sample data
+
+            Args:
+                sample_size (int, optional): [Sample size (seconds) of collection]. Defaults to 10.
+                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.
+
+            """
+            try:
+                sensor_readings = sensor_run(sample_size)
+
+                self.avg_pm1 = sensor_readings[0]
+                self.avg_pm25 = sensor_readings[1] 
+                self.avg_pm10 = sensor_readings[2]
+                self.temperature = sensor_readings[3]
+                self.humidity = sensor_readings[4]
+                self.laser_status = sensor_readings[5]
+
+
+                avg_pm1 = int((self.avg_pm1*dec_factor))
+                print("avg_pm1: %0.1f %%" % avg_pm1)
+
+                avg_pm25 = int((self.avg_pm25*dec_factor))
+                print("avg_pm25: %0.1f %%" % avg_pm25)
+
+                avg_pm10 = int((self.avg_pm10*dec_factor))
+                print("avg_pm10: %0.1f %%" % avg_pm10)
+
+                temperature = int((self.temperature*dec_factor))
+                print("temperature: %0.1f %%" % temperature)
+
+                humidity = int((self.humidity*dec_factor))
+                print("humidity: %0.1f %%" % humidity)
+
+                laser_status = int((self.laser_status*dec_factor))
+                print("laser_status: %0.1f %%" % laser_status)
+
+            except:
+                raise SensorError('Unable to connect')

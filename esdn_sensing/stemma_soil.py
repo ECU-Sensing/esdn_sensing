@@ -19,11 +19,11 @@ import time
 import board
 from adafruit_seesaw.seesaw import Seesaw
 
-def get_data():
-    """_summary_
+def test():
+    """Test that the device is connected and prints sample data
 
     Returns:
-        [int]: _description_
+        [int]: [Temperature, Moisture_Level]
     """
     i2c_bus = board.I2C()
     ss = Seesaw(i2c_bus, addr=0x36)

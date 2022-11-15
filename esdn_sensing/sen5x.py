@@ -218,3 +218,55 @@ class SEN5x:
 
         except:
             raise SensorError('Unable to connect')
+
+    def test(self, sample_size=10, dec_factor=100):
+        """Test that the device is connected and prints sample data
+
+        Args:
+            sample_size (int, optional): _description_. Defaults to 10.
+            dec_factor (int, optional): _description_. Defaults to 100.
+
+        Raises:
+            SensorError: Raise error if sensor is unreachable
+
+        """
+        try:
+            sensor_readings = sensor_run(sample_size)
+            #[mc_1p0, mc_2p5,mc_4p0, mc_10p0, ambient_rh, ambient_t, voc_index, nox_index]
+
+            self.mc_1p0= sensor_readings[0]
+            self.mc_2p5= sensor_readings[1]
+            self.mc_4p0= sensor_readings[2]
+            self.mc_10p0= sensor_readings[3]
+            self.ambient_rh= sensor_readings[4]
+            self.ambient_t= sensor_readings[5]
+            self.voc_index= sensor_readings[6]
+            #self.nox_index= sensor_readings[7]
+
+
+            mc_1p0 = int((self.mc_1p0*dec_factor))
+            logging.debug("mc_1p0: %0.1f %%" % mc_1p0)
+
+            mc_2p5 = int((self.mc_2p5*dec_factor))
+            logging.debug("mc_2p5: %0.1f %%" % mc_2p5)
+
+            mc_4p0 = int((self.mc_4p0*dec_factor))
+            logging.debug("mc_4p0: %0.1f %%" % mc_4p0)
+
+            mc_10p0 = int((self.mc_10p0*dec_factor))
+            logging.debug("mc_10p0: %0.1f %%" % mc_10p0)
+
+            ambient_rh = int((self.ambient_rh*dec_factor))
+            logging.debug("ambient_rh: %0.1f %%" % ambient_rh)
+
+            ambient_t = int((self.ambient_t*dec_factor))
+            logging.debug("ambient_t: %0.1f %%" % ambient_t)
+
+            voc_index = int((self.voc_index*dec_factor))
+            logging.debug("voc_index: %0.1f %%" % voc_index)
+
+            #nox_index = int((self.nox_index*dec_factor))
+            #logging.info("nox_index: %0.1f %%" % nox_index)
+
+        except:
+            raise SensorError('Unable to connect')

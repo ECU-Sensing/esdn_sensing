@@ -240,3 +240,69 @@ class PM25:
 
         except: 
             raise SensorError('Unable to read')
+
+    def test(self, sample_size=10,dec_factor=100):
+        """Test that the device is connected and prints sample data
+
+        Args:
+            sample_size (int, optional): Size of sample in seconds. Defaults to 10.
+            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.
+
+        Raises:
+            SensorError: Raise error if sensor is unreachable
+
+        """
+
+        try:
+            aqdata = sensor_run(sample_size)
+            self.pm10_std= aqdata["pm10 standard"]
+            self.pm25_std= aqdata["pm25 standard"]
+            self.pm100_std= aqdata["pm100 standard"]
+            self.pm10_env= aqdata["pm10 env"]
+            self.pm25_env= aqdata["pm25 env"]
+            self.pm100_env= aqdata["pm100 env"]
+            self.part_03um= aqdata["particles 03um"]
+            self.part_05um= aqdata["particles 05um"]
+            self.part_10um= aqdata["particles 10um"]
+            self.part_25um= aqdata["particles 25um"]
+            self.part_50um= aqdata["particles 50um"]
+            self.part_100um= aqdata["particles 100um"]
+
+            pm10_std = int((self.pm10_std*dec_factor))
+            print("pm10 standard: %0.1f %%" % pm10_std)
+
+            pm25_std = int((self.pm25_std*dec_factor))
+            print("pm25 standard: %0.1f %%" % pm25_std)
+
+            pm100_std = int((self.pm100_std*dec_factor))
+            print("pm100 standard: %0.1f %%" % pm100_std)
+
+            pm10_env = int((self.pm10_env*dec_factor))
+            print("pm10 env: %0.1f %%" % pm10_env)
+
+            pm25_env = int((self.pm25_env*dec_factor))
+            print("pm25 env: %0.1f %%" % pm25_env)
+
+            pm100_env = int((self.pm100_env*dec_factor))
+            print("pm100 env: %0.1f %%" % pm100_env)
+
+            part_03um = int((self.part_03um*dec_factor))
+            print("Particles > 0.3um / 0.1L air:: %0.1f %%" % part_03um)
+
+            part_05um = int((self.part_05um*dec_factor))
+            print("Particles > 0.5um / 0.1L air:: %0.1f %%" % part_05um)
+
+            part_10um = int((self.part_10um*dec_factor))
+            print("Particles > 1.0um / 0.1L air:: %0.1f %%" % part_10um)
+
+            part_25um = int((self.part_25um*dec_factor))
+            print("Particles > 2.5um / 0.1L air:: %0.1f %%" % part_25um)
+
+            part_50um = int((self.part_50um*dec_factor))
+            print("Particles > 5.0um / 0.1L air:: %0.1f %%" % part_50um)
+
+            part_100um = int((self.part_100um*dec_factor))
+            print("Particles > 10.0um / 0.1L air:: %0.1f %%" % part_100um)
+
+        except: 
+            raise SensorError('Unable to read')

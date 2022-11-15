@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -220,6 +221,78 @@
             <span class="n">sensor_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">conduc_val</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
 
             <span class="k">return</span> <span class="n">sensor_data</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Hydros.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.hydros.Hydros.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dec_factor (int, optional): Holds the decimal factor to be used for integer conversion. Defaults to 100.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            SensorError: Throws error if device is not found</span>
+<span class="sd">            ValueError: Throws error if device readings are not properly formatted after parsing (invalid readings)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Simple SDI-12 Sensor Reader&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+        
+        <span class="n">port_names</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">ports</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">()</span>
+        <span class="n">user_port_selection</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        
+        <span class="n">ser</span><span class="o">=</span><span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">ports</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">user_port_selection</span><span class="p">)]</span><span class="o">.</span><span class="n">device</span><span class="p">,</span><span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">2.5</span><span class="p">)</span> <span class="c1"># delay for arduino bootloader and the 1 second delay of the adapter.</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Connecting to sensor ...&#39;</span><span class="p">)</span>
+        
+        <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;?!&#39;</span><span class="p">)</span>
+        <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n since [0-9]$ has trouble with \r</span>
+        <span class="n">m</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;[0-9a-zA-Z]$&#39;</span><span class="p">,</span><span class="n">sdi_12_line</span><span class="p">)</span> <span class="c1"># having trouble with the \r</span>
+        <span class="c1">#TODO CHECK that devices exsits</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="p">:</span>
+            <span class="n">sdi_12_address</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># find address</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Sensor address:&#39;</span><span class="p">,</span> <span class="n">sdi_12_address</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;I!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sensor info:&#39;</span><span class="p">,</span><span class="n">sdi_12_line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;M!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">sdi_12_address</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;D0!&#39;</span><span class="p">)</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="n">sdi_12_line</span><span class="o">=</span><span class="n">sdi_12_line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># remove \r and \n</span>
+
+            <span class="n">value</span> <span class="o">=</span> <span class="n">sdi_12_line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+            <span class="n">parsed_values</span> <span class="o">=</span> <span class="n">parse_reading</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parsed_values</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="o">=</span> <span class="mi">0</span>
+                <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Reading does not match explicitly defined format.&#39;</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sensor reading:&#39;</span><span class="p">,</span> <span class="n">parsed_values</span><span class="p">)</span>
+
+            <span class="n">depth_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">water_depth</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Water Depth: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">depth_val</span><span class="p">)</span>
+
+            <span class="n">temp_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Temperature: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temp_val</span><span class="p">)</span>
+
+            <span class="n">conduc_val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conductivity: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">conduc_val</span><span class="p">)</span>
+
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
 

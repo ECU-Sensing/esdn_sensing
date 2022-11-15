@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>esdn_sensing.ltr303 &mdash; esdn_sensing 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> esdn_sensing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Welcome to ESDN_Sensing!</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Data from Hydros 21 or Decagon CDT-10 sensor</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html"><cite>hydros</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#opc"><cite>opc</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr303"><cite>ltr303</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr390"><cite>ltr390</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#minigps"><cite>minigps</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#us100"><cite>us100</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#vl680x"><cite>vl680x</cite></a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#contributor-covenant-code-of-conduct">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contrib.html#documentation-styling-guide">Documentation Styling Guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">esdn_sensing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>esdn_sensing.ltr303</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for esdn_sensing.ltr303</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">`ltr303`</span>
+<span class="sd">================================================================================</span>
+
+<span class="sd">*Python library for LTR-303 Visible Light Sensor*</span>
+
+<span class="sd">**Author(s):** `Colby Sawyer &lt;https://github.com/ColbySawyer7&gt;`_</span>
+
+<span class="sd">Implementation Notes</span>
+<span class="sd">--------------------</span>
+<span class="sd">**Hardware:**</span>
+<span class="sd">`LTR-303 &lt;https://www.adafruit.com/product/5610&gt;`_</span>
+
+<span class="sd">**Software and Dependencies:**</span>
+<span class="sd">Utilizing circuit python library based on work from `Adafruit &lt;https://github.com/adafruit/Adafruit_CircuitPython_LTR329_LTR303/blob/main`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">esdn_sensing.sensor_error</span> <span class="kn">import</span> <span class="n">SensorError</span>
+<span class="kn">from</span> <span class="nn">adafruit_ltr329_ltr303</span> <span class="kn">import</span> <span class="n">LTR303</span>
+
+
+<div class="viewcode-block" id="sensor_run"><a class="viewcode-back" href="../../api.html#esdn_sensing.ltr303.sensor_run">[docs]</a><span class="k">def</span> <span class="nf">sensor_run</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the sensor specific operations and collects/summarizes the data.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        [int]: [Returns array of integers mapped to the corresponding values ([visible_light, infrared_light])]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">i2c</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">I2C</span><span class="p">()</span>  <span class="c1"># uses board.SCL and board.SDA</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># sensor takes 100ms to &#39;boot&#39; on power up</span>
+    <span class="n">ltr303</span> <span class="o">=</span> <span class="n">LTR303</span><span class="p">(</span><span class="n">i2c</span><span class="p">)</span>
+
+    <span class="n">visible</span> <span class="o">=</span> <span class="n">ltr303</span><span class="o">.</span><span class="n">visible_plus_ir_light</span>
+    <span class="n">infrared</span> <span class="o">=</span> <span class="n">ltr303</span><span class="o">.</span><span class="n">ir_light</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Visible + IR:&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Infrared    :&quot;</span><span class="p">,</span> <span class="n">infrared</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">visible</span><span class="p">,</span> <span class="n">infrared</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LTR303"><a class="viewcode-back" href="../../api.html#esdn_sensing.ltr303.LTR303">[docs]</a><span class="k">class</span> <span class="nc">LTR303</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Driver class for LTR Light Sensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">visible_light</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">infrared_light</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="LTR303.init"><a class="viewcode-back" href="../../api.html#esdn_sensing.ltr303.LTR303.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visible_light</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">infrared_light</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize instance of sensor</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            visible_light (int, optional): Visible Light plus Infrared. Defaults to 0.</span>
+<span class="sd">            infrared_light (int, optional): Infrared light. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visible_light</span> <span class="o">=</span> <span class="n">visible_light</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infrared_light</span> <span class="o">=</span> <span class="n">infrared_light</span></div>
+
+<div class="viewcode-block" id="LTR303.get_data"><a class="viewcode-back" href="../../api.html#esdn_sensing.ltr303.LTR303.get_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Collects data from the device attached via the sensor_run method</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           [Bytearray]: [Packaged up data to be sent via LoRa driving code]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">visible_light</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infrared_light</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+
+
+            <span class="n">visible_light</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_light</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;visible_light: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">visible_light</span><span class="p">)</span>
+
+            <span class="n">infrared_light</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">infrared_light</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;infrared_light </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">infrared_light</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">visible_light</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span> <span class="n">visible_light</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">infrared_light</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+            <span class="n">sensor_data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">infrared_light</span> <span class="o">&amp;</span> <span class="mh">0xff</span>
+
+            <span class="k">return</span> <span class="n">sensor_data</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LTR303.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.ltr303.LTR303.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">sensor_readings</span> <span class="o">=</span> <span class="n">sensor_run</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">visible_light</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">infrared_light</span> <span class="o">=</span> <span class="n">sensor_readings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+
+
+                <span class="n">visible_light</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">visible_light</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;visible_light: </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">visible_light</span><span class="p">)</span>
+
+                <span class="n">infrared_light</span><span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">infrared_light</span><span class="o">*</span><span class="n">dec_factor</span><span class="p">))</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;infrared_light </span><span class="si">%0.1f</span><span class="s2"> </span><span class="si">%%</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">infrared_light</span><span class="p">)</span>
+
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Colby Sawyer.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -103,12 +103,12 @@ class BreakBeam:
         except:
             raise SensorError('Unable to connect')
 
-    def test(self, sample_size=10,dec_factor=100):
+    def test(self, sample_size=10,dec_factor=1):
             """Test that the device is connected and prints sample data
 
             Args:
                 sample_size (int, mandatory): [Sample size (seconds) of collection]
-                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.
+                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 1.
 
             """
             try:

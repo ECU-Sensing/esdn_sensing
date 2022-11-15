@@ -48,6 +48,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#sen5x"><cite>sen5x</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#pm25"><cite>pm25</cite></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html#break-beam"><cite>break_beam</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr303"><cite>ltr303</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#ltr390"><cite>ltr390</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#minigps"><cite>minigps</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#stemma-soil"><cite>stemma_soil</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#us100"><cite>us100</cite></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html#vl680x"><cite>vl680x</cite></a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Contributing</span></p>
 <ul>
@@ -186,12 +192,12 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">SensorError</span><span class="p">(</span><span class="s1">&#39;Unable to connect&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BreakBeam.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.break_beam.BreakBeam.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="BreakBeam.test"><a class="viewcode-back" href="../../api.html#esdn_sensing.break_beam.BreakBeam.test">[docs]</a>    <span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">dec_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Test that the device is connected and prints sample data</span>
 
 <span class="sd">            Args:</span>
 <span class="sd">                sample_size (int, mandatory): [Sample size (seconds) of collection]</span>
-<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 100.</span>
+<span class="sd">                dec_factor (int, optional): [Holds the decimal factor to be used for integer conversion]. Defaults to 1.</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">try</span><span class="p">:</span>

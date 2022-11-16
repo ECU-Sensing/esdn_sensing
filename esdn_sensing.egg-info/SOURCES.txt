@@ -3,6 +3,8 @@ README.rst
 setup.cfg
 setup.py
 esdn_sensing/__init__.py
+esdn_sensing/aht20.py
+esdn_sensing/bme280.py
 esdn_sensing/break_beam.py
 esdn_sensing/hydros.py
 esdn_sensing/ltr303.py

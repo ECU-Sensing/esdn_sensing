@@ -1,9 +1,12 @@
 pyserial
 myst_parser
+esdn_sensing
 adafruit-circuitpython-pm25
 adafruit-circuitpython-ltr329-ltr303
 adafruit-circuitpython-ltr390
 adafruit-circuitpython-gps
 adafruit-circuitpython-us100
 adafruit-circuitpython-vl6180x
-aadfruit-circuitpython-seesaw
+adafruit-circuitpython-seesaw
+adafruit-circuitpython-bme280
+adafruit-circuitpython-ahtx0

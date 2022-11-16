@@ -9,3 +9,5 @@ adafruit-circuitpython-ltr390
 adafruit-circuitpython-gps
 adafruit-circuitpython-us100
 adafruit-circuitpython-vl6180x
+adafruit-circuitpython-bme280
+adafruit-circuitpython-ahtx0

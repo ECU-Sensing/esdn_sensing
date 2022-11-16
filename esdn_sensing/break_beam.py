@@ -30,7 +30,7 @@ def sensor_run(sample_size):
     Returns:
         [int]: [Returns array of integers mapped to the corresponding values ([broken, total_breaks)]
     """
-    break_beam = digitalio.DigitalInOut(board.D5)
+    break_beam = digitalio.DigitalInOut(board.D23)
     break_beam.direction = digitalio.Direction.INPUT
     break_beam.pull = digitalio.Pull.UP     
 
